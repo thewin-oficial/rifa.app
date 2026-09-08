@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE WIN - RIFA OFICIAL</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: #fff; font-family: Arial, sans-serif; }
+    .wrap { max-width: 480px; margin: auto; padding: 12px; }
+    .card { border: 1px solid #C5A028; border-radius: 16px; background: #111; padding: 16px; margin: 12px 0; }
+    .bar { background: #222; height: 30px; border-radius: 20px; overflow: hidden; position: relative; }
+    .fill { height: 100%; background: linear-gradient(90deg, #C5A028, #F9E27D); width: 0%; transition: 0.5s; }
+    .grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; max-height: 350px; overflow-y: auto; background: #0a0a0a; padding: 10px; border-radius: 12px; border: 1px solid #222; }
+    .num { border: 1px solid #C5A028; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; background: #1a1a1a; border-radius: 8px; cursor: pointer; user-select: none; }
+    .num.sel { background: #C5A028; color: #000; }
+    .num.vend { background: #3a0000; color: #555; border-color: #500; text-decoration: line-through; cursor: not-allowed; }
+    .btn { width: 100%; padding: 18px; border: none; border-radius: 14px; font-weight: 900; background: linear-gradient(90deg, #C5A028, #F9E27D); color: #000; font-size: 17px; cursor: pointer; margin-top: 10px; }
+    .btn-sec { background: #333; color: #fff; margin-top: 8px; }
+    input { width: 100%; padding: 14px; margin: 7px 0; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: #fff; font-size: 15px; }
+    .pago-option { border: 1px solid #333; background: #181818; padding: 12px; border-radius: 10px; margin-bottom: 10px; text-align: left; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    
+    <!-- ================= PANTALLA 1: PRINCIPAL ================= -->
+    <div id="screen1">
+      <div style="text-align: center; padding: 15px 0;">
+        <div style="width: 80px; height: 80px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #C5A028, #F9E27D); display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900;">
+          THE WIN
+        </div>
+        <h1 style="color: #C5A028; margin: 10px 0 0;">GRAN SORTEO</h1>
+        <h2 style="margin: 0;">KEEWAY MINNIX 150</h2>
+      </div>
+
+      <div class="card">
+        <h3 style="color: gold; text-align: center; margin-top: 0;">🏆 PREMIOS</h3>
+        <p>🏍️ 1er: Moto Keeway 150 0km</p>
+        <p>📱 2do: iPhone</p>
+        <p>⛑️ 3er: Casco Certificado</p>
+      </div>
+
+      <div class="card">
+        <div style="display: flex; justify-content: space-between;">
+          <b>PROGRESO</b>
+          <b style="color: gold;"><span id="vendidos1">0</span>/7000</b>
+        </div>
+        <div class="bar" style="margin-top: 10px;">
+          <div class="fill" id="fill1"></div>
+        </div>
+        <p id="porcTxt" style="text-align: center; margin: 8px 0 0;">0% VENDIDO</p>
+      </div>
+
+      <div class="card" style="text-align: center;">
+        <p style="margin: 0;">VALOR POR NÚMERO</p>
+        <p style="font-size: 45px; font-weight: 900; color: gold; margin: 0;">$1.00</p>
+        <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Mínimo 5 números</p>
+        
+        <button class="btn" onclick="irASeleccion()">COMPRAR NÚMEROS</button>
+
+        <hr style="border-color: #222; margin-top: 15px;">
+        <p>📞 CONTACTO OFICIAL</p>
+        <p style="font-size: 22px; font-weight: 900; color: #25D366; margin: 0;">099 123 4567</p>
+      </div>
+    </div>
+
+    <!-- ================= PANTALLA 2: SELECCIÓN DE NÚMEROS ================= -->
+    <div id="screen2" class="hidden">
+      <h2 style="color: gold; text-align: center;">SELECCIONA TUS NÚMEROS</h2>
+      <p style="text-align: center; font-size: 14px; color: #aaa;">Mínimo 5 números para continuar</p>
+      
+      <div id="gridNumeros" class="grid"></div>
+
+      <div class="card" style="margin-top: 15px;">
+        <p>Seleccionados: <b id="cantSeleccionados" style="color: gold;">0</b></p>
+        <p>Total a pagar: <b id="totalPagar" style="color: gold;">$0.00</b></p>
+        <button class="btn" onclick="irAFormulario()">CONTINUAR A DATOS</button>
+        <button class="btn btn-sec" onclick="irAPrincipal()">VOLVER</button>
+      </div>
+    </div>
+
+    <!-- ================= PANTALLA 3: DATOS DEL COMPRADOR ================= -->
+    <div id="screen3" class="hidden">
+      <h2 style="color: gold; text-align: center;">DATOS DE COMPRA</h2>
+      <div class="card">
+        <label style="font-size: 13px; color: #aaa;">Nombre completo:</label>
+        <input type="text" id="nombre" placeholder="Ej: Juan Pérez">
+        
+        <label style="font-size: 13px; color: #aaa;">Teléfono (WhatsApp):</label>
+        <input type="tel" id="telefono" placeholder="Ej: 0991234567">
+        
+        <button class="btn" onclick="irAMetodosPago()">CONTINUAR A MÉTODOS DE PAGO</button>
+        <button class="btn btn-sec" onclick="irASeleccion()">VOLVER A NÚMEROS</button>
+      </div>
+    </div>
+
+    <!-- ================= PANTALLA 4: MÉTODOS DE PAGO ================= -->
+    <div id="screen4" class="hidden">
+      <h2 style="color: gold; text-align: center;">MÉTODOS DE PAGO</h2>
+      <p style="text-align: center; font-size: 14px; color: #aaa;">Realiza el pago para reservar tus números</p>
+
+      <div class="card">
+        <p style="margin-top:0;"><b>Monto total:</b> <span id="montoFinal" style="color: gold; font-weight: bold;">$0.00</span></p>
+
+        <!-- Opción 1: Transferencia Bancaria -->
+        <div class="pago-option">
+          <h4 style="margin: 0 0 5px; color: gold;">🏦 Transferencia / Depósito</h4>
+          <p style="margin: 3px 0; font-size: 13px;"><b>Banco:</b> Pichincha / Guayaquil</p>
+          <p style="margin: 3px 0; font-size: 13px;"><b>Tipo:</b> Ahorros</p>
+          <p style="margin: 3px 0; font-size: 13px;"><b>N° Cuenta:</b> 2200XXXXXX</p>
+          <p style="margin: 3px 0; font-size: 13px;"><b>Titular:</b> Nombre Apellido</p>
+          <p style="margin: 3px 0; font-size: 13px;"><b>CI/RUC:</b> 1712345678</p>
+        </div>
+
+        <!-- Opción 2: Deuna / Billetera digital -->
+        <div class="pago-option">
+          <h4 style="margin: 0 0 5px; color: #25D366;">📱 Deuna! / Billetera Digital</h4>
+          <p style="margin: 3px 0; font-size: 13px;"><b>Número:</b> 0991234567</p>
+        </div>
+
+        <p style="font-size: 12px; color: #aaa; text-align: center;">Una vez realizado el pago, envía tu comprobante por WhatsApp para confirmar tus boletos.</p>
+
+        <button class="btn" onclick="enviarWhatsApp()">REPORTAR PAGO POR WHATSAPP</button>
+        <button class="btn btn-sec" onclick="irAFormulario()">VOLVER A DATOS</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= LÓGICA JAVASCRIPT ================= -->
+  <script>
+    const TOTAL_NUMEROS = 7000;
+    const PRECIO_NUMERO = 1.00;
+    const MIN_COMPRA = 5;
+    const WHATSAPP_NUMERO = "593991234567";
+
+    let seleccionados = new Set();
+    let vendidos = [];
+
+    function cargarNumeros() {
+      const grid = document.getElementById('gridNumeros');
+      grid.innerHTML = '';
+      for (let i = 1; i <= TOTAL_NUMEROS; i++) {
+        const numDiv = document.createElement('div');
+        numDiv.classList.add('num');
+        numDiv.innerText = String(i).padStart(3, '0');
+
+        if (vendidos.includes(i)) {
+          numDiv.classList.add('vend');
+        } else {
+          numDiv.onclick = () => toggleNumero(i, numDiv);
+        }
+
+        grid.appendChild(numDiv);
+      }
+      actualizarProgreso();
+    }
+
+    function toggleNumero(num, element) {
+      if (seleccionados.has(num)) {
+        seleccionados.delete(num);
+        element.classList.remove('sel');
+      } else {
+        seleccionados.add(num);
+        element.classList.add('sel');
+      }
+      actualizarResumen();
+    }
+
+    function actualizarResumen() {
+      const cant = seleccionados.size;
+      const total = (cant * PRECIO_NUMERO).toFixed(2);
+      document.getElementById('cantSeleccionados').innerText = cant;
+      document.getElementById('totalPagar').innerText = `$${total}`;
+      document.getElementById('montoFinal').innerText = `$${total}`;
+    }
+
+    function actualizarProgreso() {
+      const totalVendidos = vendidos.length;
+      document.getElementById('vendidos1').innerText = totalVendidos;
+      const porc = ((totalVendidos / TOTAL_NUMEROS) * 100).toFixed(1);
+      document.getElementById('fill1').style.width = porc + '%';
+      document.getElementById('porcTxt').innerText = `${porc}% VENDIDO`;
+    }
+
+    function ocultarTodas() {
+      document.getElementById('screen1').classList.add('hidden');
+      document.getElementById('screen2').classList.add('hidden');
+      document.getElementById('screen3').classList.add('hidden');
+      document.getElementById('screen4').classList.add('hidden');
+    }
+
+    function irAPrincipal() {
+      ocultarTodas();
+      document.getElementById('screen1').classList.remove('hidden');
+    }
+
+    function irASeleccion() {
+      ocultarTodas();
+      document.getElementById('screen2').classList.remove('hidden');
+    }
+
+    function irAFormulario() {
+      if (seleccionados.size < MIN_COMPRA) {
+        alert(`Debes seleccionar un mínimo de ${MIN_COMPRA} números.`);
+        return;
+      }
+      ocultarTodas();
+      document.getElementById('screen3').classList.remove('hidden');
+    }
+
+    function irAMetodosPago() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const tel = document.getElementById('telefono').value.trim();
+
+      if (!nombre || !tel) {
+        alert("Por favor completa tu nombre y número de teléfono antes de continuar.");
+        return;
+      }
+      ocultarTodas();
+      document.getElementById('screen4').classList.remove('hidden');
+    }
+
+    function enviarWhatsApp() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const tel = document.getElementById('telefono').value.trim();
+      const listaNum = Array.from(seleccionados).map(n => String(n).padStart(3, '0')).join(', ');
+      const total = (seleccionados.size * PRECIO_NUMERO).toFixed(2);
+      
+      const mensaje = `¡Hola! Realicé/voy a realizar el pago de mi reserva en THE WIN.\n\n👤 *Nombre:* ${nombre}\n📞 *Teléfono:* ${tel}\n🔢 *Números elegidos:* ${listaNum}\n💵 *Monto Total:* $${total}\n\n📌 Adjunto comprobante de pago:`;
+      
+      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
+
+    cargarNumeros();
+  </script>
+</body>
+</html>
