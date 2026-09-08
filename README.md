@@ -45,7 +45,7 @@
       <div class="card">
         <div style="display: flex; justify-content: space-between;">
           <b>PROGRESO</b>
-          <b style="color: gold;"><span id="vendidos1">0</span>/1000</b>
+          <b style="color: gold;"><span id="vendidos1">0</span>/7000</b>
         </div>
         <div class="bar" style="margin-top: 10px;">
           <div class="fill" id="fill1"></div>
