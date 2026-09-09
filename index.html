@@ -7,6 +7,9 @@
   
   <!-- SDK oficial de EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <!-- JSConfetti para efectos de celebración -->
+  <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
   <script type="text/javascript">
     (function(){
       // Reemplaza con tu PUBLIC KEY de EmailJS
@@ -15,93 +18,185 @@
   </script>
 
   <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #000; color: #fff; font-family: Arial, sans-serif; }
-    .wrap { max-width: 480px; margin: auto; padding: 12px; }
-    .card { border: 1px solid #C5A028; border-radius: 16px; background: #111; padding: 16px; margin: 12px 0; position: relative; overflow: hidden; }
-    .bar { background: #222; height: 30px; border-radius: 20px; overflow: hidden; position: relative; }
-    .fill { height: 100%; background: linear-gradient(90deg, #C5A028, #F9E27D); width: 0%; transition: 0.5s; }
-    
-    /* Paquetes */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&display=swap');
+
+    * { box-sizing: border-box; transition: all 0.25s ease; }
+    body { 
+      margin: 0; 
+      background: radial-gradient(circle at top, #1a1500 0%, #050505 100%); 
+      color: #fff; 
+      font-family: 'Poppins', sans-serif; 
+      min-height: 100vh;
+    }
+
+    .wrap { max-width: 500px; margin: auto; padding: 16px; }
+
+    /* Tarjetas Neón */
+    .card { 
+      border: 1px solid rgba(249, 226, 125, 0.3); 
+      border-radius: 20px; 
+      background: rgba(20, 20, 20, 0.75); 
+      backdrop-filter: blur(10px);
+      padding: 20px; 
+      margin: 16px 0; 
+      position: relative; 
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .glow-gold {
+      box-shadow: 0 0 20px rgba(197, 160, 40, 0.25);
+      border-color: #F9E27D;
+    }
+
+    /* Barra Progresiva */
+    .bar { background: #1a1a1a; height: 26px; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid #333; }
+    .fill { 
+      height: 100%; 
+      background: linear-gradient(90deg, #FFD700, #FF5722, #E91E63); 
+      width: 0%; 
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+      box-shadow: 0 0 15px #FFD700;
+    }
+
+    /* Paquetes Interactivos */
     .pkg-card {
-      background: #0d0d0d;
-      border: 1px solid #C5A028;
-      border-radius: 20px;
+      background: linear-gradient(145deg, #151515, #0a0a0a);
+      border: 2px solid #C5A028;
+      border-radius: 24px;
       padding: 20px;
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
       position: relative;
+      cursor: pointer;
+    }
+    .pkg-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(197, 160, 40, 0.4);
     }
     .pkg-card.popular {
-      background: #fff;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
       color: #000;
-      border: 2px solid #00bcd4;
+      border: 3px solid #00E5FF;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.4);
     }
     .badge-popular {
       position: absolute;
       top: 15px;
-      right: -30px;
-      background: #00bcd4;
-      color: #000;
-      font-size: 11px;
+      right: -25px;
+      background: linear-gradient(90deg, #00E5FF, #0088FF);
+      color: #fff;
+      font-size: 10px;
       font-weight: 900;
-      padding: 4px 30px;
+      padding: 4px 28px;
       transform: rotate(45deg);
       text-transform: uppercase;
-    }
-    .pkg-tickets { font-size: 28px; font-weight: 900; color: #C5A028; }
-    .pkg-card.popular .pkg-tickets { color: #000; }
-    .pkg-price { font-size: 32px; font-weight: 900; margin: 10px 0; }
-    .btn-pkg {
-      width: 100%;
-      padding: 12px;
-      border-radius: 25px;
-      border: none;
-      font-weight: 900;
-      font-size: 15px;
-      cursor: pointer;
-      background: #e0e0e0;
-      color: #000;
-      text-transform: uppercase;
       letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    .pkg-card.popular .btn-pkg { background: #111; color: #fff; }
+    .pkg-tickets { font-size: 32px; font-weight: 900; color: #F9E27D; }
+    .pkg-card.popular .pkg-tickets { color: #000; }
+    .pkg-price { font-size: 36px; font-weight: 900; margin: 5px 0; background: linear-gradient(90deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .pkg-card.popular .pkg-price { -webkit-text-fill-color: initial; color: #000; }
 
     /* Cuadrícula de números */
     .grid { 
       display: grid; 
       grid-template-columns: repeat(5, 1fr); 
-      gap: 6px; 
-      max-height: 300px; 
+      gap: 8px; 
+      max-height: 280px; 
       overflow-y: auto; 
-      background: #0a0a0a; 
-      padding: 10px; 
-      border-radius: 12px; 
+      background: #080808; 
+      padding: 12px; 
+      border-radius: 16px; 
       border: 1px solid #222; 
     }
-    .num { border: 1px solid #C5A028; height: 38px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; background: #1a1a1a; border-radius: 8px; cursor: pointer; user-select: none; }
-    .num.sel { background: #C5A028; color: #000; }
-    .num.vend { background: #3a0000; color: #555; border-color: #500; text-decoration: line-through; cursor: not-allowed; }
-    
-    .btn { width: 100%; padding: 18px; border: none; border-radius: 14px; font-weight: 900; background: linear-gradient(90deg, #C5A028, #F9E27D); color: #000; font-size: 17px; cursor: pointer; margin-top: 10px; }
-    .btn-sec { background: #333; color: #fff; margin-top: 8px; }
-    
-    /* Formulario */
-    .form-group { margin-bottom: 12px; }
+    .num { 
+      border: 1px solid #333; 
+      height: 42px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 12px; 
+      font-weight: 800; 
+      background: #141414; 
+      border-radius: 10px; 
+      cursor: pointer; 
+      user-select: none;
+      color: #aaa;
+    }
+    .num:hover { border-color: #F9E27D; color: #fff; transform: scale(1.05); }
+    .num.sel { 
+      background: linear-gradient(135deg, #FFD700, #FF8C00); 
+      color: #000; 
+      font-weight: 900; 
+      border: none;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      animation: pulse 1.5s infinite alternate;
+    }
+    .num.vend { background: #220505; color: #552222; border-color: #441111; text-decoration: line-through; cursor: not-allowed; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.05); }
+    }
+
+    /* Botones */
+    .btn { 
+      width: 100%; 
+      padding: 18px; 
+      border: none; 
+      border-radius: 16px; 
+      font-weight: 900; 
+      background: linear-gradient(90deg, #FFD700, #FFA500); 
+      color: #000; 
+      font-size: 16px; 
+      cursor: pointer; 
+      margin-top: 12px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 165, 0, 0.5); }
+    .btn-pkg {
+      width: 100%;
+      padding: 12px;
+      border-radius: 20px;
+      border: none;
+      font-weight: 900;
+      font-size: 14px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      color: #000;
+    }
+    .pkg-card.popular .btn-pkg { background: #000; color: #fff; }
+    .btn-sec { background: #222; color: #ccc; border: 1px solid #444; box-shadow: none; }
+    .btn-sec:hover { background: #333; color: #fff; }
+
+    /* Inputs */
+    .form-group { margin-bottom: 14px; }
     .form-row { display: flex; gap: 10px; }
     .form-row .form-group { flex: 1; }
-    label { font-size: 13px; color: #ccc; display: block; margin-bottom: 4px; }
+    label { font-size: 12px; color: #bbb; display: block; margin-bottom: 6px; font-weight: 600; }
     label span { color: #ff4d4d; }
-    input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; font-size: 14px; outline: none; }
-    input:focus, select:focus { border-color: #C5A028; }
-    
-    .pago-option { border: 1px solid #333; background: #181818; padding: 12px; border-radius: 10px; margin-bottom: 10px; text-align: left; }
+    input, select { 
+      width: 100%; 
+      padding: 14px; 
+      border-radius: 12px; 
+      border: 1px solid #333; 
+      background: #111; 
+      color: #fff; 
+      font-size: 14px; 
+      outline: none; 
+      font-family: inherit;
+    }
+    input:focus, select:focus { border-color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+
+    .pago-option { border: 1px solid #333; background: #121212; padding: 14px; border-radius: 14px; margin-bottom: 10px; }
     .hidden { display: none; }
 
     /* Ruleta */
     .wheel-container { position: relative; text-align: center; margin: 15px 0; }
-    #wheel { border: 4px solid #C5A028; border-radius: 50%; box-shadow: 0 0 15px rgba(197, 160, 40, 0.4); }
-    .wheel-pointer { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid #fff; position: absolute; top: -5px; left: 50%; transform: translateX(-50%); z-index: 10; }
+    #wheel { border: 4px solid #FFD700; border-radius: 50%; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); }
+    .wheel-pointer { width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 22px solid #FF3366; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); z-index: 10; filter: drop-shadow(0 2px 4px #000); }
   </style>
 </head>
 <body>
@@ -109,92 +204,98 @@
     
     <!-- PANTALLA 1: INICIO Y PAQUETES -->
     <div id="screen1">
-      <div style="text-align: center; padding: 15px 0;">
-        <div style="width: 80px; height: 80px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #C5A028, #F9E27D); display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900;">
+      <div style="text-align: center; padding: 20px 0;">
+        <div style="width: 90px; height: 90px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #FFD700, #FF8C00); display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; font-size: 18px; box-shadow: 0 0 25px rgba(255,215,0,0.5);">
           THE WIN
         </div>
-        <h1 style="color: #C5A028; margin: 10px 0 0;">GRAN SORTEO</h1>
-        <h2 style="margin: 0;">KEEWAY MINNIX 150</h2>
+        <h1 style="background: linear-gradient(90deg, #FFD700, #FFF, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 12px 0 0; font-weight: 900;">GRAN SORTEO</h1>
+        <h3 style="margin: 0; color: #bbb; font-weight: 600;">KEEWAY MINNIX 150 🛵</h3>
       </div>
 
-      <div class="card">
-        <div style="display: flex; justify-content: space-between;">
+      <div class="card glow-gold">
+        <div style="display: flex; justify-content: space-between; font-size: 14px;">
           <b>PROGRESO DE VENTAS</b>
-          <b style="color: gold;"><span id="vendidos1">0</span>/7000</b>
+          <b style="color: #FFD700;"><span id="vendidos1">0</span>/7000</b>
         </div>
         <div class="bar" style="margin-top: 10px;">
           <div class="fill" id="fill1"></div>
         </div>
-        <p id="porcTxt" style="text-align: center; margin: 8px 0 0;">0% VENDIDO</p>
+        <p id="porcTxt" style="text-align: center; margin: 8px 0 0; font-weight: 800; font-size: 13px; color: #FFD700;">0% VENDIDO</p>
       </div>
 
-      <h2 style="color: gold; text-align: center; margin: 20px 0 10px;">ELIGE TU PAQUETE</h2>
+      <h2 style="color: #FFD700; text-align: center; margin: 25px 0 15px; font-weight: 800;">🔥 ELIGE TU PAQUETE</h2>
 
-      <div class="pkg-card">
-        <div class="pkg-tickets">x5 <span style="font-size:14px;">TICKETS</span></div>
+      <div class="pkg-card" onclick="seleccionarPaquete(5)">
+        <div class="pkg-tickets">x5 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$5 USD</div>
-        <button class="btn-pkg" onclick="seleccionarPaquete(5)">COMPRAR</button>
+        <button class="btn-pkg">COMPRAR PAQUETE</button>
       </div>
 
-      <div class="pkg-card">
-        <div class="pkg-tickets">x10 <span style="font-size:14px;">TICKETS</span></div>
+      <div class="pkg-card" onclick="seleccionarPaquete(10)">
+        <div class="pkg-tickets">x10 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$10 USD</div>
-        <button class="btn-pkg" onclick="seleccionarPaquete(10)">COMPRAR</button>
+        <button class="btn-pkg">COMPRAR PAQUETE</button>
       </div>
 
-      <div class="pkg-card popular">
-        <div class="badge-popular">LA MEJOR</div>
-        <div class="pkg-tickets">x20 <span style="font-size:14px;">TICKETS</span></div>
+      <div class="pkg-card popular" onclick="seleccionarPaquete(20)">
+        <div class="badge-popular">MÁS POPULAR</div>
+        <div class="pkg-tickets">x20 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$20 USD</div>
-        <button class="btn-pkg" onclick="seleccionarPaquete(20)">COMPRAR</button>
+        <button class="btn-pkg">COMPRAR PAQUETE</button>
       </div>
 
-      <div class="pkg-card">
-        <div class="pkg-tickets">x40 <span style="font-size:14px;">TICKETS</span></div>
+      <div class="pkg-card" onclick="seleccionarPaquete(40)">
+        <div class="pkg-tickets">x40 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$40 USD</div>
-        <button class="btn-pkg" onclick="seleccionarPaquete(40)">COMPRAR</button>
+        <button class="btn-pkg">COMPRAR PAQUETE</button>
       </div>
 
-      <button class="btn btn-sec" style="margin-bottom: 20px;" onclick="irASeleccion()">ELEGIR NÚMEROS MANUALMENTE</button>
+      <button class="btn btn-sec" style="margin-bottom: 25px;" onclick="irASeleccion()">🎯 ELEGIR NÚMEROS MANUALMENTE</button>
     </div>
 
     <!-- PANTALLA 2: NÚMEROS Y RULETA -->
     <div id="screen2" class="hidden">
-      <h2 style="color: gold; text-align: center;">NÚMEROS SELECCIONADOS</h2>
+      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">TUS NÚMEROS</h2>
 
-      <div class="card" style="text-align: center;">
-        <h3 style="margin: 0; color: gold;">🎰 RULETA DE LA SUERTE</h3>
-        <p style="font-size: 12px; color: #aaa; margin: 5px 0;">¡Gira para sumar 5 números extra al azar!</p>
+      <div class="card glow-gold" style="text-align: center;">
+        <h3 style="margin: 0; color: #FFD700; font-weight: 800;">🎰 RULETA DE LA SUERTE</h3>
+        <p style="font-size: 12px; color: #aaa; margin: 6px 0 12px;">¡Gira para regalarte 5 números extras al azar!</p>
         <div class="wheel-container">
           <div class="wheel-pointer"></div>
           <canvas id="wheel" width="180" height="180"></canvas>
         </div>
-        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #25D366, #128C7E); color: #fff; padding: 12px;" onclick="girarRuleta()">🎰 ¡GIRAR RULETA (+5 NÚMEROS)!</button>
+        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎁 ¡GIRAR RULETA GRATIS!</button>
       </div>
 
-      <p style="text-align: center; font-size: 14px; color: #aaa; margin-top: 15px;">Puedes modificar tus números en la lista:</p>
+      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Toca un número para agregarlo o quitarlo:</p>
       <div id="gridNumeros" class="grid"></div>
 
       <div class="card" style="margin-top: 15px;">
-        <p>Seleccionados: <b id="cantSeleccionados" style="color: gold;">0</b></p>
-        <p>Total a pagar: <b id="totalPagar" style="color: gold;">$0.00</b></p>
-        <button class="btn" onclick="irAFormulario()">CONTINUAR A DATOS</button>
-        <button class="btn btn-sec" onclick="irAPrincipal()">VOLVER A PAQUETES</button>
+        <div style="display:flex; justify-content: space-between; font-size: 15px;">
+          <span>Seleccionados:</span>
+          <b id="cantSeleccionados" style="color: #FFD700;">0</b>
+        </div>
+        <div style="display:flex; justify-content: space-between; font-size: 18px; margin-top: 8px;">
+          <span>Total a pagar:</span>
+          <b id="totalPagar" style="color: #00E676;">$0.00 USD</b>
+        </div>
+        <button class="btn" onclick="irAFormulario()">CONTINUAR CON MIS DATOS ➔</button>
+        <button class="btn btn-sec" onclick="irAPrincipal()">◄ VOLVER A PAQUETES</button>
       </div>
     </div>
 
     <!-- PANTALLA 3: DATOS CLIENTE -->
     <div id="screen3" class="hidden">
-      <h2 style="color: gold; text-align: center; margin-bottom: 5px;">Detalles de facturación</h2>
-      <div class="card">
+      <h2 style="color: #FFD700; text-align: center; margin-bottom: 5px; font-weight: 800;">DATOS DE FACTURACIÓN</h2>
+      <div class="card glow-gold">
         <div class="form-row">
           <div class="form-group">
             <label>Nombre <span>*</span></label>
-            <input type="text" id="nombre" placeholder="Nombre">
+            <input type="text" id="nombre" placeholder="Tu Nombre">
           </div>
           <div class="form-group">
             <label>Apellidos <span>*</span></label>
-            <input type="text" id="apellidos" placeholder="Apellidos">
+            <input type="text" id="apellidos" placeholder="Tus Apellidos">
           </div>
         </div>
 
@@ -238,7 +339,7 @@
 
         <div class="form-group">
           <label>Ciudad (opcional)</label>
-          <input type="text" id="ciudad" placeholder="Ciudad">
+          <input type="text" id="ciudad" placeholder="Tu ciudad">
         </div>
 
         <div class="form-group">
@@ -247,7 +348,7 @@
         </div>
 
         <div class="form-group">
-          <label>Dirección de correo electrónico <span>*</span></label>
+          <label>Correo electrónico <span>*</span></label>
           <input type="email" id="email" placeholder="correo@ejemplo.com">
         </div>
 
@@ -256,60 +357,65 @@
           <input type="email" id="confirmEmail" placeholder="Confirma tu correo">
         </div>
 
-        <button class="btn" onclick="irAMetodosPago()">CONTINUAR A PAGO</button>
-        <button class="btn btn-sec" onclick="irASeleccion()">VOLVER A NÚMEROS</button>
+        <button class="btn" onclick="irAMetodosPago()">IR A MÉTODOS DE PAGO ➔</button>
+        <button class="btn btn-sec" onclick="irASeleccion()">◄ VOLVER A NÚMEROS</button>
       </div>
     </div>
 
     <!-- PANTALLA 4: PAGO Y FINALIZAR -->
     <div id="screen4" class="hidden">
-      <h2 style="color: gold; text-align: center;">MÉTODOS DE PAGO</h2>
-      <div class="card">
-        <p style="margin-top:0;"><b>Monto total:</b> <span id="montoFinal" style="color: gold; font-weight: bold;">$0.00</span></p>
+      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">MÉTODOS DE PAGO</h2>
+      <div class="card glow-gold">
+        <div style="background: #181818; padding: 12px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
+          <span style="color:#aaa; font-size:13px;">Monto total a pagar:</span><br>
+          <span id="montoFinal" style="color: #00E676; font-size: 26px; font-weight: 900;">$0.00 USD</span>
+        </div>
         
         <div class="pago-option">
-          <h4 style="margin: 0 0 5px; color: gold;">🏦 Transferencia / Depósito</h4>
+          <h4 style="margin: 0 0 5px; color: #FFD700;">🏦 Transferencia / Depósito</h4>
           <p style="margin: 3px 0; font-size: 13px;"><b>Banco:</b> Pichincha / Guayaquil</p>
           <p style="margin: 3px 0; font-size: 13px;"><b>N° Cuenta:</b> 2200XXXXXX</p>
           <p style="margin: 3px 0; font-size: 13px;"><b>Titular:</b> THE WIN ECUADOR</p>
         </div>
 
         <div class="pago-option">
-          <h4 style="margin: 0 0 5px; color: #25D366;">📱 Deuna!</h4>
+          <h4 style="margin: 0 0 5px; color: #00E676;">📱 Deuna!</h4>
           <p style="margin: 3px 0; font-size: 13px;"><b>Número:</b> 0991234567</p>
         </div>
 
-        <button class="btn" id="btnFinalizar" onclick="finalizarCompra()">FINALIZAR Y ENVIAR CORREO</button>
-        <button class="btn btn-sec" onclick="irAFormulario()">VOLVER A DATOS</button>
+        <button class="btn" id="btnFinalizar" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000;" onclick="finalizarCompra()">🚀 FINALIZAR Y ENVIAR FACTURA</button>
+        <button class="btn btn-sec" onclick="irAFormulario()">◄ VOLVER A DATOS</button>
       </div>
     </div>
 
-    <!-- PANTALLA 5: AGRADECIMIENTO EN PANTALLA -->
+    <!-- PANTALLA 5: AGRADECIMIENTO -->
     <div id="screen5" class="hidden">
-      <div class="card" style="text-align: center; padding: 25px 15px;">
-        <h1 style="color: #25D366; margin-top: 0;">¡Gracias por tu pedido!</h1>
-        <p style="font-size: 15px;">Hola <b id="confirmNombre"></b>,</p>
-        <p style="font-size: 14px; color: #ccc;">Hemos recibido su pedido <b id="confirmOrden" style="color: gold;">#0000</b> y ya está en proceso.</p>
+      <div class="card glow-gold" style="text-align: center; padding: 30px 15px;">
+        <div style="font-size: 50px; margin-bottom: 10px;">🎉</div>
+        <h1 style="color: #00E676; margin-top: 0; font-weight: 900;">¡Gracias por tu pedido!</h1>
+        <p style="font-size: 16px;">Hola <b id="confirmNombre" style="color: #FFD700;"></b>,</p>
+        <p style="font-size: 14px; color: #ccc;">Hemos recibido tu pedido <b id="confirmOrden" style="color: #00E676;">#0000</b> y ya se encuentra procesado.</p>
         
         <hr style="border-color: #333; margin: 20px 0;">
         
-        <h3 style="color: gold; margin-bottom: 10px;">Tus números asignados:</h3>
-        <div id="confirmListaNumeros" style="background: #0a0a0a; border: 1px solid #333; padding: 12px; border-radius: 10px; font-weight: bold; color: #F9E27D; word-break: break-all;">
+        <h3 style="color: #FFD700; margin-bottom: 12px; font-weight: 800;">NÚMEROS ASIGNADOS:</h3>
+        <div id="confirmListaNumeros" style="background: #000; border: 2px solid #FFD700; padding: 15px; border-radius: 14px; font-weight: 900; color: #FFD700; font-size: 18px; word-break: break-all; box-shadow: inset 0 0 10px rgba(255,215,0,0.2);">
         </div>
 
-        <p style="font-size: 12px; color: #aaa; margin-top: 20px;">📧 Te hemos enviado los detalles y orden de factura a tu correo electrónico.</p>
-        <button class="btn" onclick="irAPrincipal()">VOLVER AL INICIO</button>
+        <p style="font-size: 13px; color: #aaa; margin-top: 20px;">📧 Te enviamos la orden y la confirmación a tu correo electrónico.</p>
+        <button class="btn" onclick="irAPrincipal()">INICIO</button>
       </div>
     </div>
 
   </div>
 
   <script>
+    const jsConfetti = new JSConfetti();
     const TOTAL_NUMEROS = 7000;
     const PRECIO_NUMERO = 1.00;
     const MIN_COMPRA = 5;
     const WHATSAPP_NUMERO = "593991234567"; 
-    const MI_CORREO_ADMIN = "tu_correo_admin@gmail.com"; // Tu correo para recibir copia
+    const MI_CORREO_ADMIN = "tu_correo_admin@gmail.com"; 
 
     let seleccionados = new Set();
     let vendidos = []; 
@@ -366,8 +472,8 @@
       const cant = seleccionados.size;
       const total = (cant * PRECIO_NUMERO).toFixed(2);
       document.getElementById('cantSeleccionados').innerText = cant;
-      document.getElementById('totalPagar').innerText = `$${total}`;
-      document.getElementById('montoFinal').innerText = `$${total}`;
+      document.getElementById('totalPagar').innerText = `$${total} USD`;
+      document.getElementById('montoFinal').innerText = `$${total} USD`;
     }
 
     function actualizarProgreso() {
@@ -378,7 +484,7 @@
       document.getElementById('porcTxt').innerText = `${porc}% VENDIDO`;
     }
 
-    /* RULETA */
+    /* RULETA DINÁMICA */
     let currentAngle = 0;
     let isSpinning = false;
 
@@ -386,7 +492,7 @@
       const canvas = document.getElementById('wheel');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const colors = ['#C5A028', '#111111', '#F9E27D', '#222222'];
+      const colors = ['#FFD700', '#111111', '#FF5722', '#1a1a1a', '#00E676', '#222222'];
       const slices = 8;
       const sliceAngle = (2 * Math.PI) / slices;
 
@@ -413,12 +519,12 @@
       const extraDegrees = Math.floor(Math.random() * 360) + 1440;
       currentAngle += extraDegrees;
 
-      canvas.style.transition = 'transform 3s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
+      canvas.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
       canvas.style.transform = `rotate(${currentAngle}deg)`;
 
       setTimeout(() => {
         isSpinning = false;
-        btn.innerText = "🎰 ¡GIRAR RULETA (+5 NÚMEROS)!";
+        btn.innerText = "🎁 ¡GIRAR RULETA GRATIS!";
         btn.style.opacity = "1";
 
         let nuevos = [];
@@ -436,8 +542,8 @@
         });
 
         actualizarResumen();
-        alert(`🎉 ¡Se agregaron 5 números extras!: ${nuevos.map(n => String(n).padStart(4, '0')).join(', ')}`);
-      }, 3000);
+        jsConfetti.addConfetti({ emojis: ['🎉', '⚡', '✨', '🎰'] });
+      }, 3500);
     }
 
     function ocultarTodas() {
@@ -511,7 +617,6 @@
       const total = (seleccionados.size * PRECIO_NUMERO).toFixed(2);
       const numOrden = Math.floor(10000 + Math.random() * 90000);
 
-      // Datos a enviar a EmailJS
       const templateParams = {
         to_email: email,
         admin_email: MI_CORREO_ADMIN,
@@ -524,7 +629,7 @@
         total_pagar: `$${total} USD`
       };
 
-      // 1. Enviar correo usando EmailJS
+      // 1. Enviar Email con EmailJS
       emailjs.send('TU_SERVICE_ID', 'TU_TEMPLATE_ID', templateParams)
         .then(function(response) {
             console.log('Correo enviado exitosamente!', response.status, response.text);
@@ -533,10 +638,12 @@
         });
 
       // 2. Notificación en WhatsApp
-      const mensajeWA = `¡Hola! Acabo de hacer un pedido en THE WIN.\n\n🧾 *ORDEN #${numOrden}*\n👤 *Cliente:* ${nombre} ${apellidos}\n🆔 *Cédula:* ${cedula}\n📞 *Teléfono:* ${telefono}\n📧 *Correo:* ${email}\n\n🔢 *Números:* ${listaNumStr}\n💵 *Total:* $${total}`;
+      const mensajeWA = `¡Hola! Acabo de realizar el pedido en THE WIN.\n\n🧾 *ORDEN #${numOrden}*\n👤 *Cliente:* ${nombre} ${apellidos}\n🆔 *Cédula:* ${cedula}\n📞 *Teléfono:* ${telefono}\n📧 *Correo:* ${email}\n\n🔢 *Números:* ${listaNumStr}\n💵 *Total:* $${total}`;
       window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensajeWA)}`, '_blank');
 
-      // 3. Mostrar pantalla de agradecimiento
+      // 3. Efectos y Agradecimiento
+      jsConfetti.addConfetti({ confettiRadius: 6, confettiNumber: 300 });
+
       document.getElementById('confirmNombre').innerText = `${nombre} ${apellidos}`;
       document.getElementById('confirmOrden').innerText = `#${numOrden}`;
       document.getElementById('confirmListaNumeros').innerText = listaNumStr;
