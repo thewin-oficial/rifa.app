@@ -226,31 +226,31 @@
       <h2 style="color: #FFD700; text-align: center; margin: 25px 0 15px; font-weight: 800;">🔥 ELIGE TU PAQUETE</h2>
 
       <div class="pkg-card" onclick="seleccionarPaquete(5)">
-        <div class="pkg-tickets">x5 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-tickets">x5 <span style="font-size:16px;">GIROS</span></div>
         <div class="pkg-price">$5 USD</div>
-        <button class="btn-pkg">COMPRAR PAQUETE</button>
+        <button class="btn-pkg">OBTENER 5 GIROS</button>
       </div>
 
       <div class="pkg-card" onclick="seleccionarPaquete(10)">
-        <div class="pkg-tickets">x10 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-tickets">x10 <span style="font-size:16px;">GIROS</span></div>
         <div class="pkg-price">$10 USD</div>
-        <button class="btn-pkg">COMPRAR PAQUETE</button>
+        <button class="btn-pkg">OBTENER 10 GIROS</button>
       </div>
 
       <div class="pkg-card popular" onclick="seleccionarPaquete(20)">
         <div class="badge-popular">MÁS POPULAR</div>
-        <div class="pkg-tickets">x20 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-tickets">x20 <span style="font-size:16px;">GIROS</span></div>
         <div class="pkg-price">$20 USD</div>
-        <button class="btn-pkg">COMPRAR PAQUETE</button>
+        <button class="btn-pkg">OBTENER 20 GIROS</button>
       </div>
 
       <div class="pkg-card" onclick="seleccionarPaquete(40)">
-        <div class="pkg-tickets">x40 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-tickets">x40 <span style="font-size:16px;">GIROS</span></div>
         <div class="pkg-price">$40 USD</div>
-        <button class="btn-pkg">COMPRAR PAQUETE</button>
+        <button class="btn-pkg">OBTENER 40 GIROS</button>
       </div>
 
-      <button class="btn btn-sec" style="margin-bottom: 25px;" onclick="irASeleccion()">🎯 ELEGIR NÚMEROS MANUALMENTE</button>
+      <button class="btn btn-sec" style="margin-bottom: 25px;" onclick="irASeleccionManual()">🎯 ELEGIR NÚMEROS MANUALMENTE</button>
     </div>
 
     <!-- PANTALLA 2: NÚMEROS Y RULETA -->
@@ -259,15 +259,17 @@
 
       <div class="card glow-gold" style="text-align: center;">
         <h3 style="margin: 0; color: #FFD700; font-weight: 800;">🎰 RULETA DE LA SUERTE</h3>
-        <p style="font-size: 12px; color: #aaa; margin: 6px 0 12px;">¡Gira para regalarte 5 números extras al azar!</p>
+        <p style="font-size: 13px; color: #aaa; margin: 6px 0 12px;">
+          Giros restantes del paquete: <b id="girosRestantes" style="color:#00E676; font-size: 16px;">0</b>
+        </p>
         <div class="wheel-container">
           <div class="wheel-pointer"></div>
           <canvas id="wheel" width="180" height="180"></canvas>
         </div>
-        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎁 ¡GIRAR RULETA GRATIS!</button>
+        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎁 ¡GIRAR RULETA!</button>
       </div>
 
-      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Toca un número para agregarlo o quitarlo:</p>
+      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Toca un número para agregarlo o quitarlo manualmente:</p>
       <div id="gridNumeros" class="grid"></div>
 
       <div class="card" style="margin-top: 15px;">
@@ -419,6 +421,9 @@
 
     let seleccionados = new Set();
     let vendidos = []; 
+    let girosRestantes = 0;
+    let currentAngle = 0;
+    let isSpinning = false;
 
     function cargarNumeros() {
       const grid = document.getElementById('gridNumeros');
@@ -449,12 +454,16 @@
       actualizarResumen();
     }
 
+    // Configurar el paquete y otorgar la cantidad exacta de giros
     function seleccionarPaquete(cantidad) {
-      // Reiniciar estado de la ruleta si cambian/eligen paquete
-      ruletaUsada = false;
+      seleccionados.clear();
+      document.querySelectorAll('.num.sel').forEach(el => el.classList.remove('sel'));
+
+      girosRestantes = cantidad;
+      
       const btn = document.getElementById('btnGirar');
       if (btn) {
-        btn.innerText = "🎁 ¡GIRAR RULETA GRATIS!";
+        btn.innerText = "🎁 ¡GIRAR RULETA!";
         btn.style.background = "linear-gradient(90deg, #00E676, #1DE9B6)";
         btn.style.color = "#000";
         btn.style.opacity = "1";
@@ -462,21 +471,18 @@
         btn.disabled = false;
       }
 
-      seleccionados.clear();
-      document.querySelectorAll('.num.sel').forEach(el => el.classList.remove('sel'));
+      irASeleccion();
+    }
 
-      while (seleccionados.size < cantidad) {
-        let azar = Math.floor(Math.random() * TOTAL_NUMEROS) + 1;
-        if (!vendidos.includes(azar)) {
-          seleccionados.add(azar);
-        }
+    function irASeleccionManual() {
+      girosRestantes = 0;
+      const btn = document.getElementById('btnGirar');
+      if (btn) {
+        btn.innerText = "🔒 COMPRA UN PAQUETE PARA GIRAR";
+        btn.style.background = "#333";
+        btn.style.color = "#777";
+        btn.disabled = true;
       }
-
-      seleccionados.forEach(num => {
-        const el = document.getElementById(`num-${num}`);
-        if (el) el.classList.add('sel');
-      });
-
       irASeleccion();
     }
 
@@ -486,6 +492,7 @@
       document.getElementById('cantSeleccionados').innerText = cant;
       document.getElementById('totalPagar').innerText = `$${total} USD`;
       document.getElementById('montoFinal').innerText = `$${total} USD`;
+      document.getElementById('girosRestantes').innerText = girosRestantes;
     }
 
     function actualizarProgreso() {
@@ -495,11 +502,6 @@
       document.getElementById('fill1').style.width = porc + '%';
       document.getElementById('porcTxt').innerText = `${porc}% VENDIDO`;
     }
-
-    /* RULETA DINÁMICA CON CONTROL DE GIRO ÚNICO */
-    let currentAngle = 0;
-    let isSpinning = false;
-    let ruletaUsada = false;
 
     function dibujarRuleta() {
       const canvas = document.getElementById('wheel');
@@ -520,13 +522,11 @@
       }
     }
 
+    // Función para girar la ruleta 1 vez por intento del paquete
     function girarRuleta() {
-      // Si ya está girando o si ya se usó la ruleta, bloquea la ejecución
-      if (isSpinning || ruletaUsada) return;
+      if (isSpinning || girosRestantes <= 0) return;
 
       isSpinning = true;
-      ruletaUsada = true; // Bloquea futuros giros
-
       const btn = document.getElementById('btnGirar');
       btn.innerText = "⏳ Girando ruleta...";
       btn.style.opacity = "0.6";
@@ -536,35 +536,37 @@
       const extraDegrees = Math.floor(Math.random() * 360) + 1440;
       currentAngle += extraDegrees;
 
-      canvas.style.transition = 'transform 3.5s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
+      canvas.style.transition = 'transform 2.5s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
       canvas.style.transform = `rotate(${currentAngle}deg)`;
 
       setTimeout(() => {
         isSpinning = false;
-        
-        // Bloqueo visual permanente del botón
-        btn.innerText = "🔒 ¡GIRO UTILIZADO!";
-        btn.style.background = "#333";
-        btn.style.color = "#777";
-        btn.disabled = true;
+        girosRestantes--;
 
-        let nuevos = [];
-        while (nuevos.length < 5) {
-          let azar = Math.floor(Math.random() * TOTAL_NUMEROS) + 1;
-          if (!vendidos.includes(azar) && !seleccionados.has(azar) && !nuevos.includes(azar)) {
-            nuevos.push(azar);
-          }
+        // Obtener 1 número aleatorio
+        let azar;
+        do {
+          azar = Math.floor(Math.random() * TOTAL_NUMEROS) + 1;
+        } while (vendidos.includes(azar) || seleccionados.has(azar));
+
+        seleccionados.add(azar);
+        const el = document.getElementById(`num-${azar}`);
+        if (el) el.classList.add('sel');
+
+        if (girosRestantes > 0) {
+          btn.innerText = "🎁 ¡GIRAR NUEVAMENTE!";
+          btn.style.opacity = "1";
+          btn.style.cursor = "pointer";
+        } else {
+          btn.innerText = "🔒 GIROS COMPLETADOS";
+          btn.style.background = "#333";
+          btn.style.color = "#777";
+          btn.disabled = true;
         }
 
-        nuevos.forEach(num => {
-          seleccionados.add(num);
-          const el = document.getElementById(`num-${num}`);
-          if (el) el.classList.add('sel');
-        });
-
         actualizarResumen();
-        jsConfetti.addConfetti({ emojis: ['🎉', '⚡', '🎰', '🎁'] });
-      }, 3500);
+        jsConfetti.addConfetti({ confettiNumber: 40 });
+      }, 2500);
     }
 
     function ocultarTodas() {
