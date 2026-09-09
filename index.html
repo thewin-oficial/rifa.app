@@ -446,7 +446,6 @@
     }
 
     function toggleNumero(num, element) {
-      // Si usó un paquete con ruleta, los números los da la ruleta
       if (!modoManual) return;
 
       if (seleccionados.has(num)) {
@@ -459,7 +458,6 @@
       actualizarResumen();
     }
 
-    // Configura el paquete y asigna giros
     function seleccionarPaquete(cantidad) {
       modoManual = false;
       seleccionados.clear();
@@ -508,7 +506,6 @@
       const btnContinuar = document.getElementById('btnContinuar');
       
       if (!modoManual) {
-        // En modo ruleta debe agotar los giros para avanzar
         if (girosRestantes > 0) {
           btnContinuar.disabled = true;
           btnContinuar.innerText = `COMPLETA LOS GIROS (${cant}/${girosTotalesPaquete})`;
@@ -517,7 +514,6 @@
           btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
         }
       } else {
-        // En modo manual habilita cuando cumpla con el mínimo
         if (cant >= MIN_COMPRA) {
           btnContinuar.disabled = false;
           btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
@@ -555,7 +551,6 @@
       }
     }
 
-    // Giro individual por cada ticket asignado
     function girarRuleta() {
       if (isSpinning || girosRestantes <= 0) return;
 
@@ -576,20 +571,29 @@
         isSpinning = false;
         girosRestantes--;
 
-        // Obtener 1 número disponible al azar
         let azar;
         do {
           azar = Math.floor(Math.random() * TOTAL_NUMEROS) + 1;
         } while (vendidos.includes(azar) || seleccionados.has(azar));
 
+        const numFormateado = String(azar).padStart(4, '0');
         seleccionados.add(azar);
         
-        // Iluminar el número obtenido en la lista
         const el = document.getElementById(`num-${azar}`);
         if (el) {
           el.classList.add('sel');
           el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
+
+        // 💥 CONFETI POR GIRO INDIVIDUAL
+        jsConfetti.addConfetti({
+          emojis: ['🎟️', '⚡', '✨', '🎉'],
+          emojiSize: 25,
+          confettiNumber: 40,
+        });
+
+        // 🎉 AVISO FLOTANTE DEL NÚMERO
+        mostrarAlertaGiro(numFormateado);
 
         if (girosRestantes > 0) {
           btn.innerText = `🎰 ¡GIRAR NUEVAMENTE! (${girosRestantes} giros rest.)`;
@@ -600,11 +604,47 @@
           btn.style.background = "#333";
           btn.style.color = "#777";
           btn.disabled = true;
-          jsConfetti.addConfetti({ confettiRadius: 6, confettiNumber: 150 });
+
+          // Celebra con una lluvia masiva de confeti al terminar todos los giros
+          setTimeout(() => {
+            jsConfetti.addConfetti({
+              confettiRadius: 6,
+              confettiNumber: 200,
+            });
+          }, 600);
         }
 
         actualizarResumen();
       }, 2200);
+    }
+
+    function mostrarAlertaGiro(numero) {
+      let modal = document.getElementById('modalGiro');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalGiro';
+        modal.style.cssText = `
+          position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+          background: rgba(10, 10, 10, 0.95); border: 3px solid #FFD700;
+          padding: 20px 30px; border-radius: 20px; text-align: center;
+          box-shadow: 0 0 30px rgba(255, 215, 0, 0.6); z-index: 9999;
+          opacity: 0; transition: all 0.3s ease; pointer-events: none;
+        `;
+        modal.innerHTML = `
+          <div style="font-size: 13px; color: #aaa; font-weight: 800; letter-spacing: 1px;">¡NÚMERO OBTENIDO!</div>
+          <div id="numReveladoModal" style="font-size: 42px; font-weight: 900; color: #FFD700; margin: 5px 0;">0000</div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      document.getElementById('numReveladoModal').innerText = `#${numero}`;
+      modal.style.opacity = '1';
+      modal.style.transform = 'translate(-50%, -50%) scale(1)';
+
+      setTimeout(() => {
+        modal.style.opacity = '0';
+        modal.style.transform = 'translate(-50%, -50%) scale(0.8)';
+      }, 1500);
     }
 
     function ocultarTodas() {
