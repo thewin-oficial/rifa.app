@@ -450,6 +450,18 @@
     }
 
     function seleccionarPaquete(cantidad) {
+      // Reiniciar estado de la ruleta si cambian/eligen paquete
+      ruletaUsada = false;
+      const btn = document.getElementById('btnGirar');
+      if (btn) {
+        btn.innerText = "🎁 ¡GIRAR RULETA GRATIS!";
+        btn.style.background = "linear-gradient(90deg, #00E676, #1DE9B6)";
+        btn.style.color = "#000";
+        btn.style.opacity = "1";
+        btn.style.cursor = "pointer";
+        btn.disabled = false;
+      }
+
       seleccionados.clear();
       document.querySelectorAll('.num.sel').forEach(el => el.classList.remove('sel'));
 
@@ -484,9 +496,10 @@
       document.getElementById('porcTxt').innerText = `${porc}% VENDIDO`;
     }
 
-    /* RULETA DINÁMICA */
+    /* RULETA DINÁMICA CON CONTROL DE GIRO ÚNICO */
     let currentAngle = 0;
     let isSpinning = false;
+    let ruletaUsada = false;
 
     function dibujarRuleta() {
       const canvas = document.getElementById('wheel');
@@ -508,12 +521,16 @@
     }
 
     function girarRuleta() {
-      if (isSpinning) return;
+      // Si ya está girando o si ya se usó la ruleta, bloquea la ejecución
+      if (isSpinning || ruletaUsada) return;
+
       isSpinning = true;
+      ruletaUsada = true; // Bloquea futuros giros
 
       const btn = document.getElementById('btnGirar');
-      btn.innerText = "⏳ Girando...";
+      btn.innerText = "⏳ Girando ruleta...";
       btn.style.opacity = "0.6";
+      btn.style.cursor = "not-allowed";
 
       const canvas = document.getElementById('wheel');
       const extraDegrees = Math.floor(Math.random() * 360) + 1440;
@@ -524,8 +541,12 @@
 
       setTimeout(() => {
         isSpinning = false;
-        btn.innerText = "🎁 ¡GIRAR RULETA GRATIS!";
-        btn.style.opacity = "1";
+        
+        // Bloqueo visual permanente del botón
+        btn.innerText = "🔒 ¡GIRO UTILIZADO!";
+        btn.style.background = "#333";
+        btn.style.color = "#777";
+        btn.disabled = true;
 
         let nuevos = [];
         while (nuevos.length < 5) {
@@ -542,7 +563,7 @@
         });
 
         actualizarResumen();
-        jsConfetti.addConfetti({ emojis: ['🎉', '⚡', '✨', '🎰'] });
+        jsConfetti.addConfetti({ emojis: ['🎉', '⚡', '🎰', '🎁'] });
       }, 3500);
     }
 
