@@ -120,11 +120,10 @@
       font-weight: 800; 
       background: #141414; 
       border-radius: 10px; 
-      cursor: pointer; 
       user-select: none;
-      color: #aaa;
+      color: #777;
+      cursor: default; /* Sin cursor clickeable */
     }
-    .num:hover { border-color: #F9E27D; color: #fff; transform: scale(1.05); }
     .num.sel { 
       background: linear-gradient(135deg, #FFD700, #FF8C00); 
       color: #000; 
@@ -133,7 +132,7 @@
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
       animation: pulse 1.5s infinite alternate;
     }
-    .num.vend { background: #220505; color: #552222; border-color: #441111; text-decoration: line-through; cursor: not-allowed; }
+    .num.vend { background: #220505; color: #552222; border-color: #441111; text-decoration: line-through; }
 
     @keyframes pulse {
       0% { transform: scale(1); }
@@ -250,11 +249,9 @@
         <div class="pkg-price">$40 USD</div>
         <button class="btn-pkg">GIRAR RULETA x40</button>
       </div>
-
-      <button class="btn btn-sec" style="margin-bottom: 25px;" onclick="irASeleccionManual()">🎯 ELEGIR NÚMEROS MANUALMENTE</button>
     </div>
 
-    <!-- PANTALLA 2: NÚMEROS Y RULETA -->
+    <!-- PANTALLA 2: RULETA Y TABLA -->
     <div id="screen2" class="hidden">
       <h2 style="color: #FFD700; text-align: center; font-weight: 800;">RULETA DE NÚMEROS</h2>
 
@@ -269,7 +266,7 @@
         <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎰 ¡GIRAR RULETA!</button>
       </div>
 
-      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Tus números obtenidos en los giros aparecerán marcados aquí:</p>
+      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Tus números obtenidos en la ruleta:</p>
       <div id="gridNumeros" class="grid"></div>
 
       <div class="card" style="margin-top: 15px;">
@@ -415,7 +412,6 @@
     const jsConfetti = new JSConfetti();
     const TOTAL_NUMEROS = 7000;
     const PRECIO_NUMERO = 1.00;
-    const MIN_COMPRA = 5;
     const WHATSAPP_NUMERO = "593991234567"; 
     const MI_CORREO_ADMIN = "tu_correo_admin@gmail.com"; 
 
@@ -425,7 +421,6 @@
     let girosTotalesPaquete = 0;
     let currentAngle = 0;
     let isSpinning = false;
-    let modoManual = false;
 
     function cargarNumeros() {
       const grid = document.getElementById('gridNumeros');
@@ -437,29 +432,13 @@
         numDiv.innerText = String(i).padStart(4, '0');
         if (vendidos.includes(i)) {
           numDiv.classList.add('vend');
-        } else {
-          numDiv.onclick = () => toggleNumero(i, numDiv);
         }
         grid.appendChild(numDiv);
       }
       actualizarProgreso();
     }
 
-    function toggleNumero(num, element) {
-      if (!modoManual) return;
-
-      if (seleccionados.has(num)) {
-        seleccionados.delete(num);
-        element.classList.remove('sel');
-      } else {
-        seleccionados.add(num);
-        element.classList.add('sel');
-      }
-      actualizarResumen();
-    }
-
     function seleccionarPaquete(cantidad) {
-      modoManual = false;
       seleccionados.clear();
       document.querySelectorAll('.num.sel').forEach(el => el.classList.remove('sel'));
 
@@ -479,22 +458,6 @@
       irASeleccion();
     }
 
-    function irASeleccionManual() {
-      modoManual = true;
-      girosRestantes = 0;
-      girosTotalesPaquete = 0;
-      
-      const btn = document.getElementById('btnGirar');
-      if (btn) {
-        btn.innerText = "🔒 SELECCIÓN MANUAL ACTIVADA";
-        btn.style.background = "#333";
-        btn.style.color = "#777";
-        btn.disabled = true;
-      }
-      
-      irASeleccion();
-    }
-
     function actualizarResumen() {
       const cant = seleccionados.size;
       const total = (cant * PRECIO_NUMERO).toFixed(2);
@@ -505,22 +468,13 @@
 
       const btnContinuar = document.getElementById('btnContinuar');
       
-      if (!modoManual) {
-        if (girosRestantes > 0) {
-          btnContinuar.disabled = true;
-          btnContinuar.innerText = `COMPLETA LOS GIROS (${cant}/${girosTotalesPaquete})`;
-        } else {
-          btnContinuar.disabled = false;
-          btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
-        }
+      // Debe agotar todos los giros para poder avanzar al formulario
+      if (girosRestantes > 0) {
+        btnContinuar.disabled = true;
+        btnContinuar.innerText = `COMPLETA LOS GIROS (${cant}/${girosTotalesPaquete})`;
       } else {
-        if (cant >= MIN_COMPRA) {
-          btnContinuar.disabled = false;
-          btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
-        } else {
-          btnContinuar.disabled = true;
-          btnContinuar.innerText = `ELIGE AL MENOS ${MIN_COMPRA} NÚMEROS`;
-        }
+        btnContinuar.disabled = false;
+        btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
       }
     }
 
@@ -585,14 +539,14 @@
           el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // 💥 CONFETI POR GIRO INDIVIDUAL
+        // 💥 CONFETI POR CADA GIRO INDIVIDUAL
         jsConfetti.addConfetti({
           emojis: ['🎟️', '⚡', '✨', '🎉'],
           emojiSize: 25,
           confettiNumber: 40,
         });
 
-        // 🎉 AVISO FLOTANTE DEL NÚMERO
+        // 🎉 AVISO FLOTANTE CON EL NÚMERO
         mostrarAlertaGiro(numFormateado);
 
         if (girosRestantes > 0) {
@@ -605,7 +559,7 @@
           btn.style.color = "#777";
           btn.disabled = true;
 
-          // Celebra con una lluvia masiva de confeti al terminar todos los giros
+          // Lluvia final de confeti
           setTimeout(() => {
             jsConfetti.addConfetti({
               confettiRadius: 6,
