@@ -156,6 +156,7 @@
       box-shadow: 0 5px 15px rgba(255, 165, 0, 0.3);
     }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 165, 0, 0.5); }
+    .btn:disabled { background: #333 !important; color: #777 !important; cursor: not-allowed !important; box-shadow: none !important; transform: none !important; }
     .btn-pkg {
       width: 100%;
       padding: 12px;
@@ -226,28 +227,28 @@
       <h2 style="color: #FFD700; text-align: center; margin: 25px 0 15px; font-weight: 800;">🔥 ELIGE TU PAQUETE</h2>
 
       <div class="pkg-card" onclick="seleccionarPaquete(5)">
-        <div class="pkg-tickets">x5 <span style="font-size:16px;">GIROS</span></div>
+        <div class="pkg-tickets">5 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$5 USD</div>
-        <button class="btn-pkg">OBTENER 5 GIROS</button>
+        <button class="btn-pkg">GIRAR RULETA x5</button>
       </div>
 
       <div class="pkg-card" onclick="seleccionarPaquete(10)">
-        <div class="pkg-tickets">x10 <span style="font-size:16px;">GIROS</span></div>
+        <div class="pkg-tickets">10 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$10 USD</div>
-        <button class="btn-pkg">OBTENER 10 GIROS</button>
+        <button class="btn-pkg">GIRAR RULETA x10</button>
       </div>
 
       <div class="pkg-card popular" onclick="seleccionarPaquete(20)">
         <div class="badge-popular">MÁS POPULAR</div>
-        <div class="pkg-tickets">x20 <span style="font-size:16px;">GIROS</span></div>
+        <div class="pkg-tickets">20 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$20 USD</div>
-        <button class="btn-pkg">OBTENER 20 GIROS</button>
+        <button class="btn-pkg">GIRAR RULETA x20</button>
       </div>
 
       <div class="pkg-card" onclick="seleccionarPaquete(40)">
-        <div class="pkg-tickets">x40 <span style="font-size:16px;">GIROS</span></div>
+        <div class="pkg-tickets">40 <span style="font-size:16px;">TICKETS</span></div>
         <div class="pkg-price">$40 USD</div>
-        <button class="btn-pkg">OBTENER 40 GIROS</button>
+        <button class="btn-pkg">GIRAR RULETA x40</button>
       </div>
 
       <button class="btn btn-sec" style="margin-bottom: 25px;" onclick="irASeleccionManual()">🎯 ELEGIR NÚMEROS MANUALMENTE</button>
@@ -255,33 +256,32 @@
 
     <!-- PANTALLA 2: NÚMEROS Y RULETA -->
     <div id="screen2" class="hidden">
-      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">TUS NÚMEROS</h2>
+      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">RULETA DE NÚMEROS</h2>
 
       <div class="card glow-gold" style="text-align: center;">
-        <h3 style="margin: 0; color: #FFD700; font-weight: 800;">🎰 RULETA DE LA SUERTE</h3>
-        <p style="font-size: 13px; color: #aaa; margin: 6px 0 12px;">
-          Giros restantes del paquete: <b id="girosRestantes" style="color:#00E676; font-size: 16px;">0</b>
+        <p style="font-size: 14px; color: #aaa; margin: 0 0 10px;">
+          Giros pendientes de tu paquete: <b id="girosRestantes" style="color:#00E676; font-size: 18px;">0</b>
         </p>
         <div class="wheel-container">
           <div class="wheel-pointer"></div>
           <canvas id="wheel" width="180" height="180"></canvas>
         </div>
-        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎁 ¡GIRAR RULETA!</button>
+        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎰 ¡GIRAR RULETA!</button>
       </div>
 
-      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Toca un número para agregarlo o quitarlo manualmente:</p>
+      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Tus números obtenidos en los giros aparecerán marcados aquí:</p>
       <div id="gridNumeros" class="grid"></div>
 
       <div class="card" style="margin-top: 15px;">
         <div style="display:flex; justify-content: space-between; font-size: 15px;">
-          <span>Seleccionados:</span>
+          <span>Obtenidos:</span>
           <b id="cantSeleccionados" style="color: #FFD700;">0</b>
         </div>
         <div style="display:flex; justify-content: space-between; font-size: 18px; margin-top: 8px;">
           <span>Total a pagar:</span>
           <b id="totalPagar" style="color: #00E676;">$0.00 USD</b>
         </div>
-        <button class="btn" onclick="irAFormulario()">CONTINUAR CON MIS DATOS ➔</button>
+        <button id="btnContinuar" class="btn" onclick="irAFormulario()">CONTINUAR CON MIS DATOS ➔</button>
         <button class="btn btn-sec" onclick="irAPrincipal()">◄ VOLVER A PAQUETES</button>
       </div>
     </div>
@@ -422,8 +422,10 @@
     let seleccionados = new Set();
     let vendidos = []; 
     let girosRestantes = 0;
+    let girosTotalesPaquete = 0;
     let currentAngle = 0;
     let isSpinning = false;
+    let modoManual = false;
 
     function cargarNumeros() {
       const grid = document.getElementById('gridNumeros');
@@ -444,6 +446,9 @@
     }
 
     function toggleNumero(num, element) {
+      // Si usó un paquete con ruleta, los números los da la ruleta
+      if (!modoManual) return;
+
       if (seleccionados.has(num)) {
         seleccionados.delete(num);
         element.classList.remove('sel');
@@ -454,16 +459,18 @@
       actualizarResumen();
     }
 
-    // Configurar el paquete y otorgar la cantidad exacta de giros
+    // Configura el paquete y asigna giros
     function seleccionarPaquete(cantidad) {
+      modoManual = false;
       seleccionados.clear();
       document.querySelectorAll('.num.sel').forEach(el => el.classList.remove('sel'));
 
       girosRestantes = cantidad;
-      
+      girosTotalesPaquete = cantidad;
+
       const btn = document.getElementById('btnGirar');
       if (btn) {
-        btn.innerText = "🎁 ¡GIRAR RULETA!";
+        btn.innerText = "🎰 ¡GIRAR RULETA!";
         btn.style.background = "linear-gradient(90deg, #00E676, #1DE9B6)";
         btn.style.color = "#000";
         btn.style.opacity = "1";
@@ -475,14 +482,18 @@
     }
 
     function irASeleccionManual() {
+      modoManual = true;
       girosRestantes = 0;
+      girosTotalesPaquete = 0;
+      
       const btn = document.getElementById('btnGirar');
       if (btn) {
-        btn.innerText = "🔒 COMPRA UN PAQUETE PARA GIRAR";
+        btn.innerText = "🔒 SELECCIÓN MANUAL ACTIVADA";
         btn.style.background = "#333";
         btn.style.color = "#777";
         btn.disabled = true;
       }
+      
       irASeleccion();
     }
 
@@ -493,6 +504,28 @@
       document.getElementById('totalPagar').innerText = `$${total} USD`;
       document.getElementById('montoFinal').innerText = `$${total} USD`;
       document.getElementById('girosRestantes').innerText = girosRestantes;
+
+      const btnContinuar = document.getElementById('btnContinuar');
+      
+      if (!modoManual) {
+        // En modo ruleta debe agotar los giros para avanzar
+        if (girosRestantes > 0) {
+          btnContinuar.disabled = true;
+          btnContinuar.innerText = `COMPLETA LOS GIROS (${cant}/${girosTotalesPaquete})`;
+        } else {
+          btnContinuar.disabled = false;
+          btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
+        }
+      } else {
+        // En modo manual habilita cuando cumpla con el mínimo
+        if (cant >= MIN_COMPRA) {
+          btnContinuar.disabled = false;
+          btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
+        } else {
+          btnContinuar.disabled = true;
+          btnContinuar.innerText = `ELIGE AL MENOS ${MIN_COMPRA} NÚMEROS`;
+        }
+      }
     }
 
     function actualizarProgreso() {
@@ -522,7 +555,7 @@
       }
     }
 
-    // Función para girar la ruleta 1 vez por intento del paquete
+    // Giro individual por cada ticket asignado
     function girarRuleta() {
       if (isSpinning || girosRestantes <= 0) return;
 
@@ -536,37 +569,42 @@
       const extraDegrees = Math.floor(Math.random() * 360) + 1440;
       currentAngle += extraDegrees;
 
-      canvas.style.transition = 'transform 2.5s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
+      canvas.style.transition = 'transform 2.2s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
       canvas.style.transform = `rotate(${currentAngle}deg)`;
 
       setTimeout(() => {
         isSpinning = false;
         girosRestantes--;
 
-        // Obtener 1 número aleatorio
+        // Obtener 1 número disponible al azar
         let azar;
         do {
           azar = Math.floor(Math.random() * TOTAL_NUMEROS) + 1;
         } while (vendidos.includes(azar) || seleccionados.has(azar));
 
         seleccionados.add(azar);
+        
+        // Iluminar el número obtenido en la lista
         const el = document.getElementById(`num-${azar}`);
-        if (el) el.classList.add('sel');
+        if (el) {
+          el.classList.add('sel');
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
 
         if (girosRestantes > 0) {
-          btn.innerText = "🎁 ¡GIRAR NUEVAMENTE!";
+          btn.innerText = `🎰 ¡GIRAR NUEVAMENTE! (${girosRestantes} giros rest.)`;
           btn.style.opacity = "1";
           btn.style.cursor = "pointer";
         } else {
-          btn.innerText = "🔒 GIROS COMPLETADOS";
+          btn.innerText = "🔒 ¡GIROS COMPLETADOS!";
           btn.style.background = "#333";
           btn.style.color = "#777";
           btn.disabled = true;
+          jsConfetti.addConfetti({ confettiRadius: 6, confettiNumber: 150 });
         }
 
         actualizarResumen();
-        jsConfetti.addConfetti({ confettiNumber: 40 });
-      }, 2500);
+      }, 2200);
     }
 
     function ocultarTodas() {
@@ -590,10 +628,6 @@
     }
 
     function irAFormulario() {
-      if (seleccionados.size < MIN_COMPRA) {
-        alert(`Debes seleccionar al menos ${MIN_COMPRA} números.`);
-        return;
-      }
       ocultarTodas();
       document.getElementById('screen3').classList.remove('hidden');
     }
