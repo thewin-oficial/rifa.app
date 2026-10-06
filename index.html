@@ -48,6 +48,44 @@
       border-color: #F9E27D;
     }
 
+    /* Estilos para la imagen del premio */
+    .prize-img-container {
+      width: 100%;
+      height: 200px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 15px 0;
+      border: 2px solid #C5A028;
+      box-shadow: 0 0 15px rgba(197, 160, 40, 0.3);
+    }
+    .prize-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Logo circular con imagen opcional */
+    .logo-circle {
+      width: 90px; 
+      height: 90px; 
+      margin: 0 auto; 
+      border-radius: 50%; 
+      background: linear-gradient(135deg, #FFD700, #FF8C00); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      color: #000; 
+      font-weight: 900; 
+      font-size: 16px; 
+      box-shadow: 0 0 25px rgba(255,215,0,0.5);
+      overflow: hidden;
+    }
+    .logo-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     /* Barra Progresiva */
     .bar { background: #1a1a1a; height: 26px; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid #333; }
     .fill { 
@@ -122,7 +160,7 @@
       border-radius: 10px; 
       user-select: none;
       color: #777;
-      cursor: default; /* Sin cursor clickeable */
+      cursor: default;
     }
     .num.sel { 
       background: linear-gradient(135deg, #FFD700, #FF8C00); 
@@ -190,7 +228,8 @@
     }
     input:focus, select:focus { border-color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
-    .pago-option { border: 1px solid #333; background: #121212; padding: 14px; border-radius: 14px; margin-bottom: 10px; }
+    .pago-option { border: 1px solid #333; background: #121212; padding: 14px; border-radius: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; }
+    .pago-option img { width: 40px; height: 40px; object-fit: contain; }
     .hidden { display: none; }
 
     /* Ruleta */
@@ -204,12 +243,20 @@
     
     <!-- PANTALLA 1: INICIO Y PAQUETES -->
     <div id="screen1">
-      <div style="text-align: center; padding: 20px 0;">
-        <div style="width: 90px; height: 90px; margin: 0 auto; border-radius: 50%; background: linear-gradient(135deg, #FFD700, #FF8C00); display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; font-size: 18px; box-shadow: 0 0 25px rgba(255,215,0,0.5);">
-          THE WIN
+      <div style="text-align: center; padding: 10px 0 20px;">
+        <!-- LOGOTIPO CON IMAGEN -->
+        <div class="logo-circle">
+          <!-- Reemplaza el enlace de abajo por la URL de tu logo -->
+          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150" alt="Logo The Win">
         </div>
         <h1 style="background: linear-gradient(90deg, #FFD700, #FFF, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 12px 0 0; font-weight: 900;">GRAN SORTEO</h1>
         <h3 style="margin: 0; color: #bbb; font-weight: 600;">KEEWAY MINNIX 150 🛵</h3>
+        
+        <!-- FOTO DEL PREMIO PRINCIPAL (MOTO) -->
+        <div class="prize-img-container">
+          <!-- Reemplaza el enlace de abajo con la foto real de tu moto -->
+          <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600" alt="Keeway Minnix 150">
+        </div>
       </div>
 
       <div class="card glow-gold">
@@ -371,15 +418,23 @@
         </div>
         
         <div class="pago-option">
-          <h4 style="margin: 0 0 5px; color: #FFD700;">🏦 Transferencia / Depósito</h4>
-          <p style="margin: 3px 0; font-size: 13px;"><b>Banco:</b> Pichincha / Guayaquil</p>
-          <p style="margin: 3px 0; font-size: 13px;"><b>N° Cuenta:</b> 2200XXXXXX</p>
-          <p style="margin: 3px 0; font-size: 13px;"><b>Titular:</b> THE WIN ECUADOR</p>
+          <!-- Icono de banco genérico -->
+          <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" alt="Banco">
+          <div>
+            <h4 style="margin: 0 0 5px; color: #FFD700;">🏦 Transferencia / Depósito</h4>
+            <p style="margin: 3px 0; font-size: 13px;"><b>Banco:</b> Pichincha / Guayaquil</p>
+            <p style="margin: 3px 0; font-size: 13px;"><b>N° Cuenta:</b> 2200XXXXXX</p>
+            <p style="margin: 3px 0; font-size: 13px;"><b>Titular:</b> THE WIN ECUADOR</p>
+          </div>
         </div>
 
         <div class="pago-option">
-          <h4 style="margin: 0 0 5px; color: #00E676;">📱 Deuna!</h4>
-          <p style="margin: 3px 0; font-size: 13px;"><b>Número:</b> 0991234567</p>
+          <!-- Icono de billetera móvil / Deuna -->
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888857.png" alt="Deuna">
+          <div>
+            <h4 style="margin: 0 0 5px; color: #00E676;">📱 Deuna!</h4>
+            <p style="margin: 3px 0; font-size: 13px;"><b>Número:</b> 0991234567</p>
+          </div>
         </div>
 
         <button class="btn" id="btnFinalizar" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000;" onclick="finalizarCompra()">🚀 FINALIZAR Y ENVIAR FACTURA</button>
@@ -468,7 +523,6 @@
 
       const btnContinuar = document.getElementById('btnContinuar');
       
-      // Debe agotar todos los giros para poder avanzar al formulario
       if (girosRestantes > 0) {
         btnContinuar.disabled = true;
         btnContinuar.innerText = `COMPLETA LOS GIROS (${cant}/${girosTotalesPaquete})`;
@@ -539,14 +593,12 @@
           el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // 💥 CONFETI POR CADA GIRO INDIVIDUAL
         jsConfetti.addConfetti({
           emojis: ['🎟️', '⚡', '✨', '🎉'],
           emojiSize: 25,
           confettiNumber: 40,
         });
 
-        // 🎉 AVISO FLOTANTE CON EL NÚMERO
         mostrarAlertaGiro(numFormateado);
 
         if (girosRestantes > 0) {
@@ -559,7 +611,6 @@
           btn.style.color = "#777";
           btn.disabled = true;
 
-          // Lluvia final de confeti
           setTimeout(() => {
             jsConfetti.addConfetti({
               confettiRadius: 6,
@@ -680,7 +731,6 @@
         total_pagar: `$${total} USD`
       };
 
-      // 1. Enviar Email con EmailJS
       emailjs.send('TU_SERVICE_ID', 'TU_TEMPLATE_ID', templateParams)
         .then(function(response) {
             console.log('Correo enviado exitosamente!', response.status, response.text);
@@ -688,11 +738,9 @@
             console.error('Error al enviar el correo:', error);
         });
 
-      // 2. Notificación en WhatsApp
       const mensajeWA = `¡Hola! Acabo de realizar el pedido en THE WIN.\n\n🧾 *ORDEN #${numOrden}*\n👤 *Cliente:* ${nombre} ${apellidos}\n🆔 *Cédula:* ${cedula}\n📞 *Teléfono:* ${telefono}\n📧 *Correo:* ${email}\n\n🔢 *Números:* ${listaNumStr}\n💵 *Total:* $${total}`;
       window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensajeWA)}`, '_blank');
 
-      // 3. Efectos y Agradecimiento
       jsConfetti.addConfetti({ confettiRadius: 6, confettiNumber: 300 });
 
       document.getElementById('confirmNombre').innerText = `${nombre} ${apellidos}`;
@@ -703,6 +751,10 @@
       document.getElementById('screen5').classList.remove('hidden');
     }
 
+    cargarNumeros();
+  </script>
+</body>
+</html>
     cargarNumeros();
   </script>
 </body>
