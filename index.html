@@ -7,7 +7,6 @@
   
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script type="text/javascript">
     (function(){
@@ -44,23 +43,6 @@
       box-shadow: 0 0 20px rgba(197, 160, 40, 0.25);
       border-color: #F9E27D;
     }
-
-    .qr-widget {
-      background: #111;
-      border: 2px solid #FFD700;
-      border-radius: 20px;
-      padding: 15px;
-      text-align: center;
-      margin: 15px 0;
-    }
-    .qr-container {
-      background: #fff;
-      padding: 10px;
-      display: inline-block;
-      border-radius: 12px;
-      margin: 10px 0;
-    }
-    .qr-container img { display: block; margin: auto; }
 
     .prize-img-container {
       width: 100%;
@@ -186,7 +168,6 @@
         <h3 style="margin: 0; color: #bbb; font-weight: 600;">KEEWAY MINNIX 150 🛵</h3>
         
         <div class="prize-img-container">
-          <!-- Coloca aquí el enlace o base64 de tu foto de la moto -->
           <img src="" alt="Moto Keeway Minnix" onerror="this.style.display='none'; this.parentNode.innerHTML='📸 [Foto Moto Keeway Minnix]';">
         </div>
 
@@ -211,12 +192,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="qr-widget">
-        <h4 style="color: #FFD700; margin: 0 0 5px; font-weight: 800;">📱 ESCANÉAME O COMPÁRTEME</h4>
-        <p style="font-size: 11px; color: #aaa; margin: 0;">Presiona o escanea el QR para ir directo a la rifa</p>
-        <div class="qr-container" id="qrCodeBox"></div>
       </div>
 
       <div class="card glow-gold">
@@ -276,4 +251,40 @@
         </div>
         <div style="display:flex; justify-content: space-between; font-size: 18px; margin-top: 8px;">
           <span>Total a pagar:</span>
-          <b id="totalPagar" style="color:
+          <b id="totalPagar" style="color: #00E676;">$0.00 USD</b>
+        </div>
+        <button id="btnContinuar" class="btn" onclick="irAFormulario()">CONTINUAR CON MIS DATOS ➔</button>
+        <button class="btn btn-sec" onclick="irAPrincipal()">◄ VOLVER A PAQUETES</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 3: DATOS -->
+    <div id="screen3" class="hidden">
+      <h2 style="color: #FFD700; text-align: center; margin-bottom: 5px; font-weight: 800;">DATOS DE FACTURACIÓN</h2>
+      <div class="card glow-gold">
+        <div class="form-row">
+          <div class="form-group"><label>Nombre <span>*</span></label><input type="text" id="nombre" placeholder="Tu Nombre"></div>
+          <div class="form-group"><label>Apellidos <span>*</span></label><input type="text" id="apellidos" placeholder="Tus Apellidos"></div>
+        </div>
+        <div class="form-group"><label>Cédula de Identidad <span>*</span></label><input type="text" id="cedula" placeholder="Cédula / RUC"></div>
+        <div class="form-group"><label>Provincia <span>*</span></label>
+          <select id="provincia">
+            <option value="">Selecciona tu provincia...</option>
+            <option value="Azuay">Azuay</option><option value="Guayas">Guayas</option><option value="Pichincha">Pichincha</option><option value="Tungurahua">Tungurahua</option><option value="Manabí">Manabí</option><option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Teléfono / WhatsApp <span>*</span></label><input type="tel" id="telefono" placeholder="Ej: 0991234567"></div>
+        <div class="form-group"><label>Correo electrónico <span>*</span></label><input type="email" id="email" placeholder="correo@ejemplo.com"></div>
+        <div class="form-group"><label>Confirmar correo <span>*</span></label><input type="email" id="confirmEmail" placeholder="Confirma tu correo"></div>
+
+        <button class="btn" onclick="irAMetodosPago()">IR A MÉTODOS DE PAGO ➔</button>
+        <button class="btn btn-sec" onclick="irASeleccion()">◄ VOLVER A NÚMEROS</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 4: PAGO -->
+    <div id="screen4" class="hidden">
+      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">MÉTODOS DE PAGO</h2>
+      <div class="card glow-gold">
+        <div style="background: #181818; padding: 12px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
+          <span style="color:#aaa; font-size:13px;">
