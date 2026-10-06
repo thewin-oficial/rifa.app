@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>THE WIN - RIFA OFICIAL</title>
   
-  <!-- SDK oficial de EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <!-- JSConfetti para efectos de celebración -->
   <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-  <!-- QRCode.js para generar el QR dinámico -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <script type="text/javascript">
@@ -32,7 +29,6 @@
 
     .wrap { max-width: 500px; margin: auto; padding: 16px; position: relative; }
 
-    /* Tarjetas Neón */
     .card { 
       border: 1px solid rgba(249, 226, 125, 0.3); 
       border-radius: 20px; 
@@ -49,26 +45,6 @@
       border-color: #F9E27D;
     }
 
-    /* Nube flotante dinámica */
-    .floating-cloud {
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(255, 215, 0, 0.15));
-      border: 2px dashed #00E676;
-      border-radius: 25px;
-      padding: 14px 18px;
-      margin: 15px 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      animation: floatCloud 3s ease-in-out infinite alternate;
-      cursor: pointer;
-    }
-    .floating-cloud:hover { background: rgba(0, 230, 118, 0.25); transform: scale(1.02); }
-    @keyframes floatCloud {
-      0% { transform: translateY(0px); box-shadow: 0 5px 15px rgba(0, 230, 118, 0.2); }
-      100% { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 230, 118, 0.4); }
-    }
-
-    /* Widget de Código QR */
     .qr-widget {
       background: #111;
       border: 2px solid #FFD700;
@@ -86,7 +62,6 @@
     }
     .qr-container img { display: block; margin: auto; }
 
-    /* Estilos de Imagen de Moto */
     .prize-img-container {
       width: 100%;
       height: 220px;
@@ -95,6 +70,11 @@
       margin: 15px 0;
       border: 2px solid #C5A028;
       box-shadow: 0 0 15px rgba(197, 160, 40, 0.3);
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
     }
     .prize-img-container img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -112,7 +92,7 @@
       text-align: center;
       padding-bottom: 10px;
     }
-    .mini-prize-card img { width: 100%; height: 110px; object-fit: cover; }
+    .mini-prize-card img { width: 100%; height: 110px; object-fit: cover; background: #222; }
     .mini-prize-title { font-size: 12px; font-weight: 700; color: #FFD700; margin: 8px 5px 0; }
 
     .logo-circle {
@@ -126,7 +106,6 @@
     .bar { background: #1a1a1a; height: 26px; border-radius: 20px; overflow: hidden; position: relative; border: 1px solid #333; }
     .fill { height: 100%; background: linear-gradient(90deg, #FFD700, #FF5722, #E91E63); width: 0%; transition: width 0.8s ease; box-shadow: 0 0 15px #FFD700; }
 
-    /* Paquetes */
     .pkg-card {
       background: linear-gradient(145deg, #151515, #0a0a0a);
       border: 2px solid #C5A028; border-radius: 24px; padding: 20px;
@@ -147,7 +126,6 @@
     .pkg-price { font-size: 36px; font-weight: 900; margin: 5px 0; background: linear-gradient(90deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .pkg-card.popular .pkg-price { -webkit-text-fill-color: initial; color: #000; }
 
-    /* Cuadrícula de números */
     .grid { 
       display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; 
       max-height: 280px; overflow-y: auto; background: #080808; padding: 12px; 
@@ -161,7 +139,6 @@
     .num.sel { background: linear-gradient(135deg, #FFD700, #FF8C00); color: #000; font-weight: 900; border: none; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
     .num.vend { background: #3a0d0d; color: #ff6b6b; border-color: #551111; font-weight: 900; }
 
-    /* Botones e Inputs */
     .btn { 
       width: 100%; padding: 18px; border: none; border-radius: 16px; font-weight: 900; 
       background: linear-gradient(90deg, #FFD700, #FFA500); color: #000; font-size: 16px; 
@@ -182,18 +159,15 @@
     input, select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #333; background: #111; color: #fff; font-size: 14px; outline: none; font-family: inherit; }
     input:focus, select:focus { border-color: #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
-    /* Tarjetas de Métodos de Pago Reales */
     .pago-card { 
       background: #151515; border: 1px solid #333; border-radius: 16px; 
       padding: 16px; margin-bottom: 15px; position: relative; 
     }
     .pago-card.highlight { border-color: #FFD700; box-shadow: 0 0 15px rgba(255,215,0,0.15); }
     .pago-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .pago-header img { width: 35px; height: 35px; object-fit: contain; border-radius: 6px; }
     .pago-details { font-size: 13px; color: #ddd; background: #0d0d0d; padding: 10px; border-radius: 10px; border: 1px dashed #444; }
     .hidden { display: none; }
 
-    /* Ruleta */
     .wheel-container { position: relative; text-align: center; margin: 15px 0; }
     #wheel { border: 4px solid #FFD700; border-radius: 50%; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); }
     .wheel-pointer { width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 22px solid #FF3366; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); z-index: 10; }
@@ -206,40 +180,33 @@
     <div id="screen1">
       <div style="text-align: center; padding: 10px 0 20px;">
         <div class="logo-circle">
-          <img src="AQUI_PEGAS_EL_BASE64_DE_TU_LOGO" alt="Logo The Win">
+          <img src="" alt="Logo" onerror="this.style.display='none'">
         </div>
         <h1 style="background: linear-gradient(90deg, #FFD700, #FFF, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 12px 0 0; font-weight: 900;">GRAN SORTEO</h1>
         <h3 style="margin: 0; color: #bbb; font-weight: 600;">KEEWAY MINNIX 150 🛵</h3>
         
-        <div class="floating-cloud" onclick="abrirTalonarioAdmin()">
-          <div style="text-align: left;">
-            <div style="font-size: 11px; font-weight: 900; color: #00E676; text-transform: uppercase;">📊 Talonario Dinámico</div>
-            <div style="font-size: 13px; font-weight: 800; color: #fff;">Ver números vendidos y compradores ➔</div>
-          </div>
-          <div style="font-size: 24px;">☁️</div>
-        </div>
-
         <div class="prize-img-container">
-          <img src="AQUI_PEGAS_EL_BASE64_DE_LA_MOTO" alt="Moto Keeway Minnix">
+          <!-- Coloca aquí el enlace o base64 de tu foto de la moto -->
+          <img src="" alt="Moto Keeway Minnix" onerror="this.style.display='none'; this.parentNode.innerHTML='📸 [Foto Moto Keeway Minnix]';">
         </div>
 
         <div class="card glow-gold" style="text-align: left; padding: 15px; margin-top: 15px;">
           <h4 style="color: #FFD700; margin: 0 0 10px; text-align: center; font-weight: 800;">🎁 CONOCE TODOS LOS PREMIOS</h4>
           <div class="prizes-grid">
             <div class="mini-prize-card">
-              <img src="AQUI_PEGAS_EL_BASE64_DE_PREMIO_1" alt="Premio">
+              <img src="" alt="Premio" onerror="this.style.display='none'">
               <div class="mini-prize-title">Teléfonos y Accesorios</div>
             </div>
             <div class="mini-prize-card">
-              <img src="AQUI_PEGAS_EL_BASE64_DE_PREMIO_2" alt="Premio">
+              <img src="" alt="Premio" onerror="this.style.display='none'">
               <div class="mini-prize-title">Moto en Exhibición</div>
             </div>
             <div class="mini-prize-card">
-              <img src="AQUI_PEGAS_EL_BASE64_DE_PREMIO_3" alt="Premio">
+              <img src="" alt="Premio" onerror="this.style.display='none'">
               <div class="mini-prize-title">Segundo Ángulo Moto</div>
             </div>
             <div class="mini-prize-card">
-              <img src="AQUI_PEGAS_EL_BASE64_DE_PREMIO_4" alt="Premio">
+              <img src="" alt="Premio" onerror="this.style.display='none'">
               <div class="mini-prize-title">Kit Sorpresa</div>
             </div>
           </div>
@@ -309,372 +276,4 @@
         </div>
         <div style="display:flex; justify-content: space-between; font-size: 18px; margin-top: 8px;">
           <span>Total a pagar:</span>
-          <b id="totalPagar" style="color: #00E676;">$0.00 USD</b>
-        </div>
-        <button id="btnContinuar" class="btn" onclick="irAFormulario()">CONTINUAR CON MIS DATOS ➔</button>
-        <button class="btn btn-sec" onclick="irAPrincipal()">◄ VOLVER A PAQUETES</button>
-      </div>
-    </div>
-
-    <!-- PANTALLA 3: DATOS -->
-    <div id="screen3" class="hidden">
-      <h2 style="color: #FFD700; text-align: center; margin-bottom: 5px; font-weight: 800;">DATOS DE FACTURACIÓN</h2>
-      <div class="card glow-gold">
-        <div class="form-row">
-          <div class="form-group"><label>Nombre <span>*</span></label><input type="text" id="nombre" placeholder="Tu Nombre"></div>
-          <div class="form-group"><label>Apellidos <span>*</span></label><input type="text" id="apellidos" placeholder="Tus Apellidos"></div>
-        </div>
-        <div class="form-group"><label>Cédula de Identidad <span>*</span></label><input type="text" id="cedula" placeholder="Cédula / RUC"></div>
-        <div class="form-group"><label>Provincia <span>*</span></label>
-          <select id="provincia">
-            <option value="">Selecciona tu provincia...</option>
-            <option value="Azuay">Azuay</option><option value="Guayas">Guayas</option><option value="Pichincha">Pichincha</option><option value="Tungurahua">Tungurahua</option><option value="Manabí">Manabí</option><option value="Otro">Otro</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Teléfono / WhatsApp <span>*</span></label><input type="tel" id="telefono" placeholder="Ej: 0991234567"></div>
-        <div class="form-group"><label>Correo electrónico <span>*</span></label><input type="email" id="email" placeholder="correo@ejemplo.com"></div>
-        <div class="form-group"><label>Confirmar correo <span>*</span></label><input type="email" id="confirmEmail" placeholder="Confirma tu correo"></div>
-
-        <button class="btn" onclick="irAMetodosPago()">IR A MÉTODOS DE PAGO ➔</button>
-        <button class="btn btn-sec" onclick="irASeleccion()">◄ VOLVER A NÚMEROS</button>
-      </div>
-    </div>
-
-    <!-- PANTALLA 4: PAGO (CON TUS DATOS REALES DE PRODUBANCO, PICHINCHA Y PAYPAL) -->
-    <div id="screen4" class="hidden">
-      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">MÉTODOS DE PAGO</h2>
-      <div class="card glow-gold">
-        <div style="background: #181818; padding: 12px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
-          <span style="color:#aaa; font-size:13px;">Monto total a pagar:</span><br>
-          <span id="montoFinal" style="color: #00E676; font-size: 26px; font-weight: 900;">$0.00 USD</span>
-        </div>
-        
-        <!-- Produbanco -->
-        <div class="pago-card highlight">
-          <div class="pago-header">
-            <div style="background:#006837; width:35px; height:35px; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:14px;">P</div>
-            <div>
-              <h4 style="margin: 0; color: #FFD700; font-size: 15px;">Produbanco</h4>
-              <span style="font-size: 11px; color: #888;">Grupo Promerica</span>
-            </div>
-          </div>
-          <div class="pago-details">
-            <b>Tipo:</b> Cuenta de Ahorros<br>
-            <b>Número:</b> 20001992595[cite: 6]<br>
-            <b>Titular:</b> Sergio Guizado García[cite: 6]
-          </div>
-        </div>
-
-        <!-- Banco Pichincha -->
-        <div class="pago-card highlight">
-          <div class="pago-header">
-            <div style="background:#FFCC00; width:35px; height:35px; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:900; font-size:14px;">BP</div>
-            <div>
-              <h4 style="margin: 0; color: #FFD700; font-size: 15px;">Banco Pichincha</h4>
-              <span style="font-size: 11px; color: #888;">Nacional</span>
-            </div>
-          </div>
-          <div class="pago-details">
-            <b>Tipo:</b> Cuenta de Ahorro Transaccional<br>
-            <b>Número:</b> 4998011400[cite: 7]<br>
-            <b>Titular:</b> Sergio Guizado García[cite: 7]
-          </div>
-        </div>
-
-        <!-- PayPal (QR Integrado) -->
-        <div class="pago-card highlight" style="text-align: center;">
-          <h4 style="margin: 0 0 5px; color: #FFD700; font-size: 15px;">💳 Pago Internacional (PayPal)</h4>
-          <p style="font-size: 12px; color: #aaa; margin: 0 0 10px;">Escanea o haz clic para pagar a Sergio Guizado[cite: 8]</p>
-          <div style="background:#fff; display:inline-block; padding:8px; border-radius:10px;">
-            <img src="AQUI_PEGAS_EL_BASE64_DEL_QR_PAYPAL" alt="QR PayPal Sergio Guizado" style="width: 120px; height: 120px; object-fit: contain; display:block;">
-          </div>
-        </div>
-
-        <button class="btn" id="btnFinalizar" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000;" onclick="finalizarCompra()">🚀 FINALIZAR Y ENVIAR COMPRA</button>
-        <button class="btn btn-sec" onclick="irAFormulario()">◄ VOLVER A DATOS</button>
-      </div>
-    </div>
-
-    <!-- PANTALLA 5: AGRADECIMIENTO -->
-    <div id="screen5" class="hidden">
-      <div class="card glow-gold" style="text-align: center; padding: 30px 15px;">
-        <div style="font-size: 50px; margin-bottom: 10px;">🎉</div>
-        <h1 style="color: #00E676; margin-top: 0; font-weight: 900;">¡Gracias por tu compra!</h1>
-        <p style="font-size: 16px;">Hola <b id="confirmNombre" style="color: #FFD700;"></b>,</p>
-        <p style="font-size: 14px; color: #ccc;">Tu orden <b id="confirmOrden" style="color: #00E676;">#0000</b> está registrada con éxito.</p>
-        
-        <div style="background: #111; border: 1px solid #FFD700; border-radius: 12px; padding: 12px; margin: 15px 0; text-align: left; font-size: 13px;">
-          <b style="color: #FFD700;">📅 FECHA OFICIAL DEL SORTEO:</b><br>
-          Sábado 31 de Diciembre de 2026 a las 20:00 (En vivo por redes sociales).
-        </div>
-
-        <h3 style="color: #FFD700; margin-bottom: 8px; font-weight: 800;">TUS NÚMEROS ASIGNADOS:</h3>
-        <div id="confirmListaNumeros" style="background: #000; border: 2px solid #FFD700; padding: 15px; border-radius: 14px; font-weight: 900; color: #FFD700; font-size: 18px; word-break: break-all;"></div>
-
-        <p style="font-size: 12px; color: #aaa; margin-top: 15px;">📧 Te enviamos el comprobante y los detalles de la rifa a tu correo.</p>
-        <button class="btn" onclick="irAPrincipal()">INICIO</button>
-      </div>
-    </div>
-
-    <!-- PANTALLA 6: TALONARIO DINÁMICO ADMIN -->
-    <div id="screenAdmin" class="hidden">
-      <h2 style="color: #00E676; text-align: center; font-weight: 800;">📊 TALONARIO Y VENTAS</h2>
-      <div class="card glow-gold">
-        <div style="display:flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;">
-          <span>Total Vendidos: <b id="adminTotalVendidos" style="color:#FFD700;">0</b></span>
-          <span>Recaudado: <b id="adminRecaudado" style="color:#00E676;">$0.00</b></span>
-        </div>
-        <h4 style="color: #FFD700; margin: 10px 0 5px;">Lista de Compradores y Números:</h4>
-        <div id="adminListaCompradores" style="max-height: 250px; overflow-y: auto; background: #111; padding: 10px; border-radius: 10px; font-size: 12px; border: 1px solid #333;">
-          <p style="color: #777; text-align: center;">No hay compras registradas todavía.</p>
-        </div>
-        <button class="btn btn-sec" style="margin-top: 15px;" onclick="irAPrincipal()">◄ VOLVER AL INICIO</button>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    const jsConfetti = new JSConfetti();
-    const TOTAL_NUMEROS = 7000;
-    const PRECIO_NUMERO = 1.00;
-    const WHATSAPP_NUMERO = "593991234567"; 
-    const MI_CORREO_ADMIN = "tu_correo_admin@gmail.com"; 
-
-    let vendidos = JSON.parse(localStorage.getItem('thewin_vendidos')) || [];
-    let registrosClientes = JSON.parse(localStorage.getItem('thewin_clientes')) || [];
-
-    let seleccionados = new Set();
-    let girosRestantes = 0;
-    let girosTotalesPaquete = 0;
-    let currentAngle = 0;
-    let isSpinning = false;
-
-    window.onload = function() {
-      const qrBox = document.getElementById('qrCodeBox');
-      if(qrBox) {
-        qrBox.innerHTML = "";
-        new QRCode(qrBox, {
-          text: window.location.href,
-          width: 110,
-          height: 110,
-          colorDark: "#000000",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
-        });
-      }
-      cargarNumeros();
-    };
-
-    function cargarNumeros() {
-      const grid = document.getElementById('gridNumeros');
-      grid.innerHTML = '';
-      for (let i = 1; i <= TOTAL_NUMEROS; i++) {
-        const numDiv = document.createElement('div');
-        numDiv.classList.add('num');
-        numDiv.id = `num-${i}`;
-        numDiv.innerText = String(i).padStart(4, '0');
-        if (vendidos.includes(i)) {
-          numDiv.classList.add('vend');
-        }
-        grid.appendChild(numDiv);
-      }
-      actualizarProgreso();
-    }
-
-    function seleccionarPaquete(cantidad) {
-      seleccionados.clear();
-      girosRestantes = cantidad;
-      girosTotalesPaquete = cantidad;
-
-      const btn = document.getElementById('btnGirar');
-      if (btn) {
-        btn.innerText = "🎰 ¡GIRAR RULETA!";
-        btn.style.background = "linear-gradient(90deg, #00E676, #1DE9B6)";
-        btn.disabled = false;
-      }
-      irASeleccion();
-    }
-
-    function actualizarResumen() {
-      const cant = seleccionados.size;
-      const total = (cant * PRECIO_NUMERO).toFixed(2);
-      document.getElementById('cantSeleccionados').innerText = cant;
-      document.getElementById('totalPagar').innerText = `$${total} USD`;
-      document.getElementById('montoFinal').innerText = `$${total} USD`;
-      document.getElementById('girosRestantes').innerText = girosRestantes;
-
-      const btnContinuar = document.getElementById('btnContinuar');
-      if (girosRestantes > 0) {
-        btnContinuar.disabled = true;
-        btnContinuar.innerText = `COMPLETA LOS GIROS (${cant}/${girosTotalesPaquete})`;
-      } else {
-        btnContinuar.disabled = false;
-        btnContinuar.innerText = "CONTINUAR CON MIS DATOS ➔";
-      }
-    }
-
-    function actualizarProgreso() {
-      const totalVendidos = vendidos.length;
-      document.getElementById('vendidos1').innerText = totalVendidos;
-      const porc = ((totalVendidos / TOTAL_NUMEROS) * 100).toFixed(1);
-      document.getElementById('fill1').style.width = porc + '%';
-      document.getElementById('porcTxt').innerText = `${porc}% VENDIDO`;
-    }
-
-    function dibujarRuleta() {
-      const canvas = document.getElementById('wheel');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const colors = ['#FFD700', '#111111', '#FF5722', '#1a1a1a', '#00E676', '#222222'];
-      const slices = 8;
-      const sliceAngle = (2 * Math.PI) / slices;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < slices; i++) {
-        ctx.beginPath();
-        ctx.fillStyle = colors[i % colors.length];
-        ctx.moveTo(90, 90);
-        ctx.arc(90, 90, 90, i * sliceAngle, (i + 1) * sliceAngle);
-        ctx.fill();
-        ctx.stroke();
-      }
-    }
-
-    function girarRuleta() {
-      if (isSpinning || girosRestantes <= 0) return;
-      isSpinning = true;
-      const btn = document.getElementById('btnGirar');
-      btn.innerText = "⏳ Girando...";
-      btn.disabled = true;
-
-      const canvas = document.getElementById('wheel');
-      currentAngle += Math.floor(Math.random() * 360) + 1440;
-      canvas.style.transition = 'transform 2s cubic-bezier(0.15, 0.88, 0.15, 0.98)';
-      canvas.style.transform = `rotate(${currentAngle}deg)`;
-
-      setTimeout(() => {
-        isSpinning = false;
-        girosRestantes--;
-
-        let azar;
-        do {
-          azar = Math.floor(Math.random() * TOTAL_NUMEROS) + 1;
-        } while (vendidos.includes(azar) || seleccionados.has(azar));
-
-        seleccionados.add(azar);
-        const el = document.getElementById(`num-${azar}`);
-        if (el) { el.classList.add('sel'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-
-        jsConfetti.addConfetti({ emojis: ['🎟️', '⚡', '✨'], confettiNumber: 30 });
-
-        if (girosRestantes > 0) {
-          btn.innerText = `🎰 ¡GIRAR NUEVAMENTE! (${girosRestantes} rest.)`;
-          btn.disabled = false;
-        } else {
-          btn.innerText = "🔒 ¡GIROS COMPLETADOS!";
-          btn.style.background = "#333";
-          btn.disabled = true;
-        }
-        actualizarResumen();
-      }, 2000);
-    }
-
-    function ocultarTodas() {
-      document.getElementById('screen1').classList.add('hidden');
-      document.getElementById('screen2').classList.add('hidden');
-      document.getElementById('screen3').classList.add('hidden');
-      document.getElementById('screen4').classList.add('hidden');
-      document.getElementById('screen5').classList.add('hidden');
-      document.getElementById('screenAdmin').classList.add('hidden');
-    }
-
-    function irAPrincipal() { ocultarTodas(); document.getElementById('screen1').classList.remove('hidden'); }
-    function irASeleccion() { ocultarTodas(); document.getElementById('screen2').classList.remove('hidden'); actualizarResumen(); dibujarRuleta(); }
-    function irAFormulario() { ocultarTodas(); document.getElementById('screen3').classList.remove('hidden'); }
-    
-    function irAMetodosPago() {
-      const nombre = document.getElementById('nombre').value.trim();
-      const apellidos = document.getElementById('apellidos').value.trim();
-      const cedula = document.getElementById('cedula').value.trim();
-      const provincia = document.getElementById('provincia').value;
-      const telefono = document.getElementById('telefono').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const confirmEmail = document.getElementById('confirmEmail').value.trim();
-
-      if (!nombre || !apellidos || !cedula || !provincia || !telefono || !email || !confirmEmail) {
-        alert("Por favor completa los campos obligatorios."); return;
-      }
-      if (email !== confirmEmail) { alert("Los correos no coinciden."); return; }
-      ocultarTodas(); document.getElementById('screen4').classList.remove('hidden');
-    }
-
-    function finalizarCompra() {
-      const nombre = document.getElementById('nombre').value.trim();
-      const apellidos = document.getElementById('apellidos').value.trim();
-      const cedula = document.getElementById('cedula').value.trim();
-      const telefono = document.getElementById('telefono').value.trim();
-      const email = document.getElementById('email').value.trim();
-
-      const listaNumArr = Array.from(seleccionados).map(n => String(n).padStart(4, '0'));
-      const listaNumStr = listaNumArr.join(', ');
-      const total = (seleccionados.size * PRECIO_NUMERO).toFixed(2);
-      const numOrden = Math.floor(10000 + Math.random() * 90000);
-
-      seleccionados.forEach(num => { if (!vendidos.includes(num)) vendidos.push(num); });
-      localStorage.setItem('thewin_vendidos', JSON.stringify(vendidos));
-
-      registrosClientes.push({ orden: numOrden, cliente: `${nombre} ${apellidos}`, telefono, numeros: listaNumStr, total });
-      localStorage.setItem('thewin_clientes', JSON.stringify(registrosClientes));
-
-      const templateParams = {
-        to_email: email,
-        admin_email: MI_CORREO_ADMIN,
-        cliente_nombre: `${nombre} ${apellidos}`,
-        num_orden: `#${numOrden}`,
-        cedula: cedula,
-        telefono: telefono,
-        lista_numeros: listaNumStr,
-        total_pagar: `$${total} USD`,
-        fecha_sorteo: "31 de Diciembre de 2026 a las 20:00"
-      };
-
-      emailjs.send('TU_SERVICE_ID', 'TU_TEMPLATE_ID', templateParams).catch(err => console.log(err));
-
-      const mensajeWA = `¡Hola! Acabo de comprar en THE WIN.\n🧾 *ORDEN #${numOrden}*\n👤 *Cliente:* ${nombre} ${apellidos}\n📞 *Teléfono:* ${telefono}\n🔢 *Números:* ${listaNumStr}\n💵 *Total:* $${total}`;
-      window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensajeWA)}`, '_blank');
-
-      jsConfetti.addConfetti({ confettiRadius: 6, confettiNumber: 200 });
-
-      document.getElementById('confirmNombre').innerText = `${nombre} ${apellidos}`;
-      document.getElementById('confirmOrden').innerText = `#${numOrden}`;
-      document.getElementById('confirmListaNumeros').innerText = listaNumStr;
-
-      ocultarTodas();
-      document.getElementById('screen5').classList.remove('hidden');
-      cargarNumeros();
-    }
-
-    function abrirTalonarioAdmin() {
-      ocultarTodas();
-      document.getElementById('screenAdmin').classList.remove('hidden');
-      document.getElementById('adminTotalVendidos').innerText = vendidos.length;
-      document.getElementById('adminRecaudado').innerText = `$${(vendidos.length * PRECIO_NUMERO).toFixed(2)}`;
-
-      const contenedor = document.getElementById('adminListaCompradores');
-      if (registrosClientes.length === 0) {
-        contenedor.innerHTML = `<p style="color: #777; text-align: center;">No hay compras registradas todavía.</p>`;
-      } else {
-        contenedor.innerHTML = "";
-        registrosClientes.forEach(reg => {
-          contenedor.innerHTML += `
-            <div style="border-bottom: 1px dashed #333; padding: 6px 0;">
-              <b style="color: #FFD700;">Orden #${reg.orden}</b> - ${reg.cliente} (${reg.telefono})<br>
-              <span style="color: #00E676;">Boletos: ${reg.numeros}</span>
-            </div>`;
-        });
-      }
-    }
-  </script>
-</body>
-</html>
+          <b id="totalPagar" style="color:
