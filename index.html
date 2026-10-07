@@ -54,6 +54,7 @@
       box-shadow: 0 0 15px rgba(197, 160, 40, 0.3);
       background: #111;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       color: #FFD700;
@@ -97,7 +98,7 @@
     .logo-circle {
       width: 90px; height: 90px; margin: 0 auto; border-radius: 50%; 
       background: linear-gradient(135deg, #FFD700, #FF8C00); 
-      display: flex; align-items: center; justify-content: center; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
       box-shadow: 0 0 25px rgba(255,215,0,0.5); overflow: hidden;
       color: #000; font-weight: 900; font-size: 12px; text-align: center;
     }
@@ -166,4 +167,183 @@
     .pago-card.highlight { border-color: #FFD700; box-shadow: 0 0 15px rgba(255,215,0,0.15); }
     .pago-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
     .pago-details { font-size: 13px; color: #ddd; background: #0d0d0d; padding: 10px; border-radius: 10px; border: 1px dashed #444; }
-    .hidden { display
+    .hidden { display: none !important; }
+
+    .wheel-container { position: relative; text-align: center; margin: 15px 0; }
+    #wheel { border: 4px solid #FFD700; border-radius: 50%; box-shadow: 0 0 25px rgba(255, 215, 0, 0.5); }
+    .wheel-pointer { width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 22px solid #FF3366; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); z-index: 10; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    
+    <!-- PANTALLA 1: INICIO Y PAQUETES -->
+    <div id="screen1">
+      <div style="text-align: center; padding: 10px 0 20px;">
+        <div class="logo-circle">
+          <span>LOGO</span>
+          <img src="" alt="Logo" onerror="this.style.display='none'">
+        </div>
+        <h1 style="background: linear-gradient(90deg, #FFD700, #FFF, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 12px 0 0; font-weight: 900;">GRAN SORTEO</h1>
+        <h3 style="margin: 0; color: #bbb; font-weight: 600;">KEEWAY MINNIX 150 🛵</h3>
+        
+        <div class="prize-img-container">
+          <span>[FOTO MOTO KEEWAY MINNIX]</span>
+          <img src="" alt="Moto Keeway Minnix" onerror="this.style.display='none'">
+        </div>
+
+        <div class="card glow-gold" style="text-align: left; padding: 15px; margin-top: 15px;">
+          <h4 style="color: #FFD700; margin: 0 0 10px; text-align: center; font-weight: 800;">🎁 CONOCE TODOS LOS PREMIOS</h4>
+          <div class="prizes-grid">
+            <div class="mini-prize-card">
+              <div class="mini-prize-img"><span>[Teléfonos]</span><img src="" alt="Premio" onerror="this.style.display='none'"></div>
+              <div class="mini-prize-title">Teléfonos y Accesorios</div>
+            </div>
+            <div class="mini-prize-card">
+              <div class="mini-prize-img"><span>[Moto Exposición]</span><img src="" alt="Premio" onerror="this.style.display='none'"></div>
+              <div class="mini-prize-title">Moto en Exhibición</div>
+            </div>
+            <div class="mini-prize-card">
+              <div class="mini-prize-img"><span>[Segundo Ángulo]</span><img src="" alt="Premio" onerror="this.style.display='none'"></div>
+              <div class="mini-prize-title">Segundo Ángulo Moto</div>
+            </div>
+            <div class="mini-prize-card">
+              <div class="mini-prize-img"><span>[Kit Sorpresa]</span><img src="" alt="Premio" onerror="this.style.display='none'"></div>
+              <div class="mini-prize-title">Kit Sorpresa</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card glow-gold">
+        <div style="display: flex; justify-content: space-between; font-size: 14px;">
+          <b>PROGRESO GENERAL</b>
+          <b style="color: #FFD700;"><span id="vendidos1">0</span>/7000</b>
+        </div>
+        <div class="bar" style="margin-top: 10px;">
+          <div class="fill" id="fill1"></div>
+        </div>
+        <p id="porcTxt" style="text-align: center; margin: 8px 0 0; font-weight: 800; font-size: 13px; color: #FFD700;">0% VENDIDO</p>
+      </div>
+
+      <h2 style="color: #FFD700; text-align: center; margin: 25px 0 15px; font-weight: 800;">🔥 ELIGE TU PAQUETE</h2>
+
+      <div class="pkg-card" onclick="seleccionarPaquete(5)">
+        <div class="pkg-tickets">5 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-price">$5 USD</div>
+        <button class="btn-pkg">GIRAR RULETA x5</button>
+      </div>
+
+      <div class="pkg-card" onclick="seleccionarPaquete(10)">
+        <div class="pkg-tickets">10 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-price">$10 USD</div>
+        <button class="btn-pkg">GIRAR RULETA x10</button>
+      </div>
+
+      <div class="pkg-card popular" onclick="seleccionarPaquete(20)">
+        <div class="badge-popular">MÁS POPULAR</div>
+        <div class="pkg-tickets">20 <span style="font-size:16px;">TICKETS</span></div>
+        <div class="pkg-price">$20 USD</div>
+        <button class="btn-pkg">GIRAR RULETA x20</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 2: RULETA Y SELECCIÓN -->
+    <div id="screen2" class="hidden">
+      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">RULETA DE NÚMEROS</h2>
+      <div class="card glow-gold" style="text-align: center;">
+        <p style="font-size: 14px; color: #aaa; margin: 0 0 10px;">
+          Giros pendientes: <b id="girosRestantes" style="color:#00E676; font-size: 18px;">0</b>
+        </p>
+        <div class="wheel-container">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheel" width="180" height="180"></canvas>
+        </div>
+        <button id="btnGirar" class="btn" style="background: linear-gradient(90deg, #00E676, #1DE9B6); color: #000; padding: 14px;" onclick="girarRuleta()">🎰 ¡GIRAR RULETA!</button>
+      </div>
+
+      <p style="text-align: center; font-size: 13px; color: #aaa; margin-top: 15px;">Tus números obtenidos:</p>
+      <div id="gridNumeros" class="grid"></div>
+
+      <div class="card" style="margin-top: 15px;">
+        <div style="display:flex; justify-content: space-between; font-size: 15px;">
+          <span>Obtenidos:</span>
+          <b id="cantSeleccionados" style="color: #FFD700;">0</b>
+        </div>
+        <div style="display:flex; justify-content: space-between; font-size: 18px; margin-top: 8px;">
+          <span>Total a pagar:</span>
+          <b id="totalPagar" style="color: #00E676;">$0.00 USD</b>
+        </div>
+        <button id="btnContinuar" class="btn" onclick="irAFormulario()">CONTINUAR CON MIS DATOS ➔</button>
+        <button class="btn btn-sec" onclick="irAPrincipal()">◄ VOLVER A PAQUETES</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 3: DATOS -->
+    <div id="screen3" class="hidden">
+      <h2 style="color: #FFD700; text-align: center; margin-bottom: 5px; font-weight: 800;">DATOS DE FACTURACIÓN</h2>
+      <div class="card glow-gold">
+        <div class="form-row">
+          <div class="form-group"><label>Nombre <span>*</span></label><input type="text" id="nombre" placeholder="Tu Nombre"></div>
+          <div class="form-group"><label>Apellidos <span>*</span></label><input type="text" id="apellidos" placeholder="Tus Apellidos"></div>
+        </div>
+        <div class="form-group"><label>Cédula de Identidad <span>*</span></label><input type="text" id="cedula" placeholder="Cédula / RUC"></div>
+        <div class="form-group"><label>Provincia <span>*</span></label>
+          <select id="provincia">
+            <option value="">Selecciona tu provincia...</option>
+            <option value="Azuay">Azuay</option><option value="Guayas">Guayas</option><option value="Pichincha">Pichincha</option><option value="Tungurahua">Tungurahua</option><option value="Manabí">Manabí</option><option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Teléfono / WhatsApp <span>*</span></label><input type="tel" id="telefono" placeholder="Ej: 0991234567"></div>
+        <div class="form-group"><label>Correo electrónico <span>*</span></label><input type="email" id="email" placeholder="correo@ejemplo.com"></div>
+        <div class="form-group"><label>Confirmar correo <span>*</span></label><input type="email" id="confirmEmail" placeholder="Confirma tu correo"></div>
+
+        <button class="btn" onclick="irAMetodosPago()">IR A MÉTODOS DE PAGO ➔</button>
+        <button class="btn btn-sec" onclick="irASeleccion()">◄ VOLVER A NÚMEROS</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA 4: PAGO -->
+    <div id="screen4" class="hidden">
+      <h2 style="color: #FFD700; text-align: center; font-weight: 800;">MÉTODOS DE PAGO</h2>
+      <div class="card glow-gold">
+        <div style="background: #181818; padding: 12px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
+          <span style="color:#aaa; font-size:13px;">Monto total a pagar:</span><br>
+          <span id="montoFinal" style="color: #00E676; font-size: 26px; font-weight: 900;">$0.00 USD</span>
+        </div>
+        
+        <!-- Produbanco -->
+        <div class="pago-card highlight">
+          <div class="pago-header">
+            <div style="background:#006837; width:35px; height:35px; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:14px;">P</div>
+            <div>
+              <h4 style="margin: 0; color: #FFD700; font-size: 15px;">Produbanco</h4>
+              <span style="font-size: 11px; color: #888;">Grupo Promerica</span>
+            </div>
+          </div>
+          <div class="pago-details">
+            <b>Tipo:</b> Cuenta de Ahorros<br>
+            <b>Número:</b> 20001992595[cite: 6]<br>
+            <b>Titular:</b> Sergio Guizado García[cite: 6]
+          </div>
+        </div>
+
+        <!-- Banco Pichincha -->
+        <div class="pago-card highlight">
+          <div class="pago-header">
+            <div style="background:#FFCC00; width:35px; height:35px; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:900; font-size:14px;">BP</div>
+            <div>
+              <h4 style="margin: 0; color: #FFD700; font-size: 15px;">Banco Pichincha</h4>
+              <span style="font-size: 11px; color: #888;">Nacional</span>
+            </div>
+          </div>
+          <div class="pago-details">
+            <b>Tipo:</b> Cuenta de Ahorro Transaccional<br>
+            <b>Número:</b> 4998011400[cite: 7]<br>
+            <b>Titular:</b> Sergio Guizado García[cite: 7]
+          </div>
+        </div>
+
+        <!-- PayPal -->
+        <div class="pago-card highlight" style="text-align: center;">
+          <h4 style="margin: 0 0 5px; color: #FFD700;
